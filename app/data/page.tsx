@@ -5,14 +5,14 @@ export const metadata = { title: 'Anne Zeng' };
 const projects = [
   {
     tag: 'Analytics',
-    title: 'Jalen Tracker',
-    description: 'A rigorous, data-driven study on the undeniable winning advantage of having players named Jalen on an NBA roster.',
+    title: 'Jalen Win Share Tracker',
+    description: 'A highly analytical, game-breaking analysis dashboard on the impact of players named Jalen on a NBA team.',
     url: '/data/jalen',
   },
   {
     tag: 'Data',
     title: 'Workout Log',
-    description: 'Personal workout dashboard. Tracking total weight lifted across sessions, with detailed breakdowns by exercise group and other relevant metrics.',
+    description: 'Personal workout dashboard tracking overall weight lifted over the course of my workouts and the breakdown of the exercise groups and other relevant information.',
     url: '/data/workout',
   },
 ];
@@ -36,6 +36,9 @@ export default function ProjectsPage() {
           </a>
         ))}
       </div>
+      <footer className={styles.footer}>
+        <p>&copy; {new Date().getFullYear()} Anne Zeng. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

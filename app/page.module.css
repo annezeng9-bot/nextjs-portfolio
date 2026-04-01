@@ -1,4 +1,4 @@
-﻿.page { min-height: calc(100vh - 61px); }
+.page { min-height: calc(100vh - 61px); }
 
 .subNav {
   display: flex;

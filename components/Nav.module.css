@@ -1,4 +1,4 @@
-﻿.nav {
+.nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,16 +75,18 @@
   display: none;
   flex-direction: column;
   background: var(--white);
-  border-bottom: 0.5px solid var(--grey-200);
   overflow: hidden;
   max-height: 0;
   position: sticky;
-  top: 53px;
+  top: 47px;
   z-index: 199;
   transition: max-height 0.25s ease;
 }
 
-.mobileMenuOpen { max-height: 300px; }
+.mobileMenuOpen {
+  max-height: 300px;
+  border-bottom: 0.5px solid var(--grey-200);
+}
 
 .mobileLink {
   font-family: var(--font-body), sans-serif;

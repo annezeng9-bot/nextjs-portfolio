@@ -226,6 +226,9 @@ export default function JalenPage() {
 
         </div>
       </div>
+      <footer className={styles.footer}>
+        <p>&copy; {new Date().getFullYear()} Anne Zeng. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

@@ -93,6 +93,9 @@ export default function CollectionPage() {
           <Card key={card.cert} {...card} />
         ))}
       </div>
+      <footer className={styles.footer}>
+        <p>&copy; {new Date().getFullYear()} Anne Zeng. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

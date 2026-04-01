@@ -145,12 +145,11 @@ function VideoCard({ item }: { item: Photo }) {
       onClick={!playing ? handlePlay : undefined}
       style={{ cursor: playing ? 'default' : 'pointer' }}
     >
-      {/* Aspect-ratio placeholder so no white space before video loads */}
       <div style={{ position: 'relative', width: '100%', paddingBottom: playing ? 0 : aspectPct, background: '#111', overflow: 'hidden' }}>
         <video
           ref={videoRef}
           playsInline
-          preload="none"
+          preload="metadata"
           controls={playing}
           onEnded={() => setPlaying(false)}
           style={{ position: playing ? 'static' : 'absolute', top: 0, left: 0, width: '100%', height: playing ? 'auto' : '100%', display: 'block', objectFit: 'cover', pointerEvents: playing ? 'auto' : 'none' }}
@@ -159,13 +158,11 @@ function VideoCard({ item }: { item: Photo }) {
         </video>
         {!playing && (
           <>
-            {/* Play button circle */}
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: '1.5px solid rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: 0, height: 0, borderTop: '7px solid transparent', borderBottom: '7px solid transparent', borderLeft: '12px solid rgba(255,255,255,0.85)', marginLeft: 3 }} />
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.45)', border: '1.5px solid rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 0, height: 0, borderTop: '7px solid transparent', borderBottom: '7px solid transparent', borderLeft: '12px solid rgba(255,255,255,0.9)', marginLeft: 3 }} />
               </div>
             </div>
-            {/* Caption overlay */}
             <div className={styles.overlay} style={{ opacity: hovered ? 1 : 0, pointerEvents: 'none' }}>
               <span className={styles.overlayText}>
                 {(item.location || item.year) ? `${[item.location, item.year].filter(Boolean).join(', ')}` : 'Play'}
@@ -240,7 +237,7 @@ export default function PortfolioPage() {
       </div>
 
       <footer className={styles.footer}>
-        <p>Â© {new Date().getFullYear()} Anne Zeng. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Anne Zeng. All rights reserved.</p>
       </footer>
     </div>
   );

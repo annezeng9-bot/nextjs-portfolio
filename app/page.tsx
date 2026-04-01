@@ -135,6 +135,8 @@ function VideoCard({ item }: { item: Photo }) {
     if (videoRef.current) { videoRef.current.play(); setPlaying(true); }
   }
 
+  const aspectPct = item.h && item.w ? `${(item.h / item.w * 100).toFixed(2)}%` : '66.67%';
+
   return (
     <div
       className={styles.card}
@@ -143,36 +145,45 @@ function VideoCard({ item }: { item: Photo }) {
       onClick={!playing ? handlePlay : undefined}
       style={{ cursor: playing ? 'default' : 'pointer' }}
     >
-      <video
-        ref={videoRef}
-        playsInline
-        preload="metadata"
-        controls={playing}
-        onEnded={() => setPlaying(false)}
-        style={{ width: '100%', height: 'auto', display: 'block', pointerEvents: playing ? 'auto' : 'none' }}
-      >
-        <source src={item.src} type="video/mp4" />
-      </video>
-      {!playing && (
-        <div
-          className={styles.overlay}
-          style={{ opacity: hovered ? 1 : 0, pointerEvents: 'none' }}
+      {/* Aspect-ratio placeholder so no white space before video loads */}
+      <div style={{ position: 'relative', width: '100%', paddingBottom: playing ? 0 : aspectPct, background: '#111', overflow: 'hidden' }}>
+        <video
+          ref={videoRef}
+          playsInline
+          preload="none"
+          controls={playing}
+          onEnded={() => setPlaying(false)}
+          style={{ position: playing ? 'static' : 'absolute', top: 0, left: 0, width: '100%', height: playing ? 'auto' : '100%', display: 'block', objectFit: 'cover', pointerEvents: playing ? 'auto' : 'none' }}
         >
-          <span className={styles.overlayText}>
-            Click to play{(item.location || item.year) ? ` - ${[item.location, item.year].filter(Boolean).join(', ')}` : ''}
-          </span>
-        </div>
-      )}
+          <source src={item.src} type="video/mp4" />
+        </video>
+        {!playing && (
+          <>
+            {/* Play button circle */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: '1.5px solid rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 0, height: 0, borderTop: '7px solid transparent', borderBottom: '7px solid transparent', borderLeft: '12px solid rgba(255,255,255,0.85)', marginLeft: 3 }} />
+              </div>
+            </div>
+            {/* Caption overlay */}
+            <div className={styles.overlay} style={{ opacity: hovered ? 1 : 0, pointerEvents: 'none' }}>
+              <span className={styles.overlayText}>
+                {(item.location || item.year) ? `${[item.location, item.year].filter(Boolean).join(', ')}` : 'Play'}
+              </span>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
-function MediaCard({ item }: { item: Photo }) {
+function MediaCard({ item, priority }: { item: Photo; priority?: boolean }) {
   if (item.type === 'video') return <VideoCard item={item} />;
-  return <PhotoCard photo={item} />;
+  return <PhotoCard photo={item} priority={priority} />;
 }
 
-function PhotoCard({ photo }: { photo: Photo }) {
+function PhotoCard({ photo, priority }: { photo: Photo; priority?: boolean }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -185,7 +196,8 @@ function PhotoCard({ photo }: { photo: Photo }) {
         alt={photo.alt}
         width={photo.w}
         height={photo.h}
-        sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 33vw"
+        priority={priority}
+        sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1100px) 33vw, 25vw"
         style={{ width: '100%', height: 'auto', display: 'block' }}
       />
       {(photo.location || photo.year) && (
@@ -220,7 +232,7 @@ export default function PortfolioPage() {
 
       <div className={`${styles.grid} ${active === 'travel' || active === 'iphone' || active === 'liveevents' ? styles.gridTight : ''}`}>
         {photos.map((item, i) => (
-          <MediaCard key={i} item={item} />
+          <MediaCard key={i} item={item} priority={i < 8} />
         ))}
         {photos.length === 0 && (
           <p className={styles.empty}>No photos yet in this category.</p>

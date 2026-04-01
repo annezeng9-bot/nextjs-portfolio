@@ -369,7 +369,8 @@ export default function WorkoutPage() {
         <h1 className={styles.title}>Workout Log</h1>
       </div>
 
-      <div style={{ background: '#0a0a0a', color: '#e8e8e8', margin: '0 160px 80px', border: '0.5px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+      <div className={styles.dashboard}>
+        <div style={{ background: '#0a0a0a', color: '#e8e8e8' }}>
         <div style={{ position: 'fixed', inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`, pointerEvents: 'none', zIndex: 100, opacity: 0.4 }} />
 
         <header style={{ borderBottom: '1px solid #222', padding: '2rem 2.5rem 1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -379,10 +380,10 @@ export default function WorkoutPage() {
           </div>
         </header>
 
-        <main style={{ padding: '2rem 2.5rem', display: 'grid', gap: '1.5rem' }}>
+        <main style={{ padding: 'clamp(1rem, 4vw, 2rem) clamp(1rem, 4vw, 2.5rem)', display: 'grid', gap: '1.5rem' }}>
 
           {/* Stat cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
             {[
               { label: 'Total Volume Lifted', value: `${(totalVol/1000).toFixed(0)}K`, sub: 'lbs - incl. bodyweight @ 145', color: '#c8ff00' },
               { label: 'Sessions Logged', value: String(sessions.length), sub: 'Jan 20 - Mar 24, 2026', color: '#ff3c5a' },
@@ -434,7 +435,7 @@ export default function WorkoutPage() {
           </div>
 
           {/* Two col */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             <div style={{ background: '#111', border: '1px solid #222', padding: '1.5rem' }}>
               <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#888', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 Most-Trained Exercises <span style={{ flex: 1, height: 1, background: '#222', display: 'block' }} />
@@ -497,6 +498,7 @@ export default function WorkoutPage() {
           </div>
 
         </main>
+      </div>
       </div>
 
       {modalIdx !== null && <Modal idx={modalIdx} onClose={() => setModalIdx(null)} />}

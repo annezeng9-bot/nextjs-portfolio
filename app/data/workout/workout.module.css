@@ -17,10 +17,7 @@
   transition: color 0.15s ease;
 }
 
-.back::before {
-  content: '\2190  ';
-}
-
+.back::before { content: '\2190  '; }
 .back:hover { color: var(--black); }
 
 .label {
@@ -40,13 +37,22 @@
   line-height: 1.2;
 }
 
+.dashboard {
+  margin: 0 160px 80px;
+  border: 0.5px solid var(--grey-300);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
 @media (max-width: 1100px) {
   .header { padding: 40px 32px 24px; }
+  .dashboard { margin: 0 32px 64px; }
 }
 
 @media (max-width: 768px) {
   .header { padding: 32px 20px 20px; }
   .title { font-size: 22px; }
+  .dashboard { margin: 0; border-left: none; border-right: none; border-radius: 0; }
 }
 
 @media (max-width: 480px) {

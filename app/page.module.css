@@ -91,7 +91,8 @@
 @media (max-width: 768px) {
   .grid { columns: 2; padding: 12px 16px 0; }
   .gridTight { columns: 2; }
-  .subNav { padding: 14px 16px; gap: 20px; }
+  .subNav { padding: 14px 16px; gap: 16px; }
+  .subNavLink { font-size: 9px; letter-spacing: 0.06em; }
   .footer { padding: 28px 16px; }
 }
 

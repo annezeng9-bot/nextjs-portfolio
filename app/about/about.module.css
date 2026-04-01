@@ -1,4 +1,4 @@
-.page { padding: 64px 160px; min-height: calc(100vh - 61px); }
+﻿.page { padding: 64px 160px; min-height: calc(100vh - 61px); }
 
 .layout {
   display: grid;
@@ -98,7 +98,7 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* Mobile tap — toggled via JS class */
+/* Mobile tap â€” toggled via JS class */
 .jerseyWrap.touched .jerseyTooltip {
   opacity: 1;
   transform: translateX(-50%) translateY(0);

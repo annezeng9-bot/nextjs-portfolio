@@ -20,7 +20,7 @@ function Jersey({ name, number, primary, secondary, accent }: typeof teams[0]) {
     <div
       className={styles.jerseyWrap + (touched ? ' ' + styles.touched : '')}
       onTouchStart={() => setTouched(true)}
-      onTouchEnd={() => setTimeout(() => setTouched(false), 1200)}
+      onTouchEnd={() => setTimeout(() => setTouched(false), 400)}
     >
       <svg width="48" height="52" viewBox="0 0 48 52" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
         <rect x="8"  y="10" width="32" height="42" fill={primary} rx="1" />
@@ -62,7 +62,8 @@ export default function AboutPage() {
           <p className={styles.tagline}>Toronto-based. Senior Analyst. Photographer.</p>
           <p className={styles.body}>
             I build systems that organize and visualize information. I also take lots of photos!
-            I create everything from data dashboards to live broadcast assets to high-speed sports photography.
+            My work ranges from architecting data dashboards to producing live broadcast assets
+            to high-speed sports photography.
           </p>
 
           <div className={styles.divider} />
@@ -77,7 +78,7 @@ export default function AboutPage() {
           </div>
 
           <a href="/collection" className={styles.collectionLink}>
-            Check out my card collection!
+            Check out my card collection
           </a>
         </div>
 

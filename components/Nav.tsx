@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -30,13 +30,17 @@ export default function Nav() {
           ))}
         </ul>
 
-        <a
+        <button
           className={styles.menuToggle}
-          href="#menu"
-          onClick={(e) => { e.preventDefault(); setOpen(o => !o); }}
+          onClick={() => setOpen(o => !o)}
+          aria-label="Toggle menu"
         >
-          {open ? 'Close' : 'Menu'}
-        </a>
+          <div className={styles.hamburger + (open ? ' ' + styles.hamburgerOpen : '')}>
+            <span />
+            <span />
+            <span />
+          </div>
+        </button>
       </nav>
 
       <div className={styles.mobileMenu + (open ? ' ' + styles.mobileMenuOpen : '')}>

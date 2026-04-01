@@ -1,4 +1,4 @@
-.nav {
+﻿.nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,12 +37,38 @@
 
 .menuToggle {
   display: none;
-  font-family: var(--font-body), sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
   color: var(--black);
-  text-decoration: none;
+  line-height: 1;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 22px;
+}
+
+.hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--black);
+  border-radius: 1px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.hamburgerOpen span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.hamburgerOpen span:nth-child(2) {
+  opacity: 0;
+}
+.hamburgerOpen span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
 }
 
 .mobileMenu {
@@ -62,12 +88,12 @@
 
 .mobileLink {
   font-family: var(--font-body), sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.06em;
+  font-size: 11px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--grey-400);
   text-decoration: none;
-  padding: 14px 20px;
+  padding: 10px 20px;
   display: block;
 }
 
@@ -84,5 +110,5 @@
   .menuToggle { display: block; }
   .mobileMenu { display: flex; }
   .nav { padding: 14px 20px; }
-  .name { font-size: 15px; }
+  .name { font-size: 15px; font-family: var(--font-monument-black), sans-serif; }
 }

@@ -1,5 +1,5 @@
-﻿'use client';
-// @ts-nocheck
+﻿// @ts-nocheck
+'use client';
 import { useState, useEffect, useRef } from 'react';
 import styles from './workout.module.css';
 

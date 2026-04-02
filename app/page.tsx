@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
@@ -6,7 +6,7 @@ import styles from './page.module.css';
 const categories = [
   { label: 'Dragon Boat', key: 'dragonboat' },
   { label: 'Travel', key: 'travel' },
-  { label: 'Live Events', key: 'liveevents' },
+  { label: 'Events', key: 'liveevents' },
   { label: 'iPhone', key: 'iphone' },
 ];
 

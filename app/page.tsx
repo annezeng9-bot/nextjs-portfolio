@@ -30,12 +30,12 @@ const allPhotos: Record<string, Photo[]> = {
   ],
   threebythree: [
     { src: '/photos/3x3/20260408_3v3_1.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_7.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
     { src: '/photos/3x3/20260408_3v3_2.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
     { src: '/photos/3x3/20260408_3v3_3.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
-    { src: '/photos/3x3/20260408_3v3_4.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
     { src: '/photos/3x3/20260408_3v3_5.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
     { src: '/photos/3x3/20260408_3v3_6.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
-    { src: '/photos/3x3/20260408_3v3_7.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
     { src: '/photos/3x3/20260408_3v3_8.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
   ],
   travel: [

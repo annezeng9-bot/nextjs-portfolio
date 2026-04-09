@@ -120,7 +120,7 @@ export default function JalenPage() {
               <span style={{ fontStyle: "italic" }}>Effect</span>
             </h1>
             <DoubleRule style={{ marginTop: 14, marginBottom: 12 }} />
-            <p style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontStyle: "italic", fontSize: "clamp(13px, 2vw, 16px)", color: "#444", maxWidth: 560, margin: "0 auto", lineHeight: 1.5 }}>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontStyle: "italic", fontSize: "clamp(13px, 2vw, 16px)", color: "#444", maxWidth: 560, margin: "0 auto", lineHeight: 1.5 }}>
               It started with Jalen Rose. The Michigan Fab Five guard who turned his first name into a cultural footprint so large that the NBA has never quite recovered. Since Rose suited up in 1994, the league has seen a quiet but undeniable proliferation of Jalens -- each one seemingly compelled by birthright to play basketball at the highest level. This is a rigorous, data-driven investigation into whether the name itself carries winning DNA, or whether we are simply pattern-matching our way into believing something beautiful.
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function JalenPage() {
             <span>* DENOTES ALL-STAR &nbsp;&middot;&nbsp; ** = 2 JALENS &nbsp;&middot;&nbsp; * = 1 JALEN &nbsp;&middot;&nbsp; o = NONE</span>
             <span>WIN SHARES ARE SEASON-TO-DATE ESTIMATES &nbsp;&middot;&nbsp; STANDINGS THROUGH MAR. 28, 2026</span>
           </div>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 13, color: "#aaa", marginTop: 28, lineHeight: 1.7 }}>
+          <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontStyle: "italic", fontSize: 13, color: "#aaa", marginTop: 28, lineHeight: 1.7 }}>
             Please note: If it&apos;s not blatantly clear, this is not an actual scientific analysis on the impact of Jalens on an NBA roster. But maybe naming your son Jalen improves his chances of making it to the NBA.
           </p>
 

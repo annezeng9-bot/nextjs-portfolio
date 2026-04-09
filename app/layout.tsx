@@ -3,6 +3,7 @@ import { DM_Sans } from 'next/font/google';
 import localFont from 'next/font/local';
 import Nav from '@/components/Nav';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],

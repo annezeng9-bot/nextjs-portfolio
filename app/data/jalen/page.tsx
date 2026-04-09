@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState } from 'react';
 import styles from './jalen.module.css';
 
@@ -103,7 +103,7 @@ export default function JalenPage() {
       <div className={styles.header}>
         <a href="/data" className={styles.back}>Projects</a>
         <p className={styles.label}>Data</p>
-        <h1 className={styles.title}>Jalen Win Share Tracker</h1>
+        <h1 className={styles.title}>Jalen Tracker</h1>
       </div>
 
       <div className={styles.window}>
@@ -121,7 +121,7 @@ export default function JalenPage() {
             </h1>
             <DoubleRule style={{ marginTop: 14, marginBottom: 12 }} />
             <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(13px, 2vw, 16px)", color: "#444", maxWidth: 560, margin: "0 auto", lineHeight: 1.5 }}>
-              A highly analytical, game-breaking analysis of whether having a player named Jalen on your NBA roster correlates with winning basketball games.
+              It started with Jalen Rose. The Michigan Fab Five guard who turned his first name into a cultural footprint so large that the NBA has never quite recovered. Since Rose suited up in 1994, the league has seen a quiet but undeniable proliferation of Jalens -- each one seemingly compelled by birthright to play basketball at the highest level. This is a rigorous, data-driven investigation into whether the name itself carries winning DNA, or whether we are simply pattern-matching our way into believing something beautiful.
             </p>
           </div>
 

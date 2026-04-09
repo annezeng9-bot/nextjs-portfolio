@@ -5,6 +5,7 @@ import styles from './page.module.css';
 
 const categories = [
   { label: 'Dragon Boat', key: 'dragonboat' },
+  { label: '3x3', key: 'threebythree' },
   { label: 'Travel', key: 'travel' },
   { label: 'Events', key: 'liveevents' },
   { label: 'iPhone', key: 'iphone' },
@@ -26,6 +27,17 @@ const allPhotos: Record<string, Photo[]> = {
     { src: '/photos/dragonboat/20250614_TIDBRF_Part1_011.jpg',                      alt: 'Tid Brf 2025', w: 1872, h: 1265 },
     { src: '/photos/dragonboat/20250614_TIDBRF_Part2_031.jpg',                      alt: 'Tid Brf 2025', w: 1644, h: 1107 },
     { src: '/photos/dragonboat/20250614_TIDBRF_Part2_220.jpg',                      alt: 'Tid Brf 2025', w: 1803, h: 1264 },
+  ],
+  threebythree: [
+    { src: '/photos/3x3/20260408_3v3_4296.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4313.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4375.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4420.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4579.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4622.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4641.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4647.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
+    { src: '/photos/3x3/20260408_3v3_4654.jpg', alt: '3x3 2026', w: 1365, h: 2048 },
   ],
   travel: [
     { src: '/photos/travel/20211110_ZionCanyon_13.jpg', alt: 'Zion Canyon', w: 1291, h: 1936, location: 'Zion Canyon', year: '2021' },
@@ -172,6 +184,8 @@ export default function PortfolioPage() {
 
   const gridClass = active === 'travel' || active === 'iphone' || active === 'liveevents'
     ? styles.grid + ' ' + styles.gridTight
+    : active === 'threebythree'
+    ? styles.grid + ' ' + styles.gridThree
     : styles.grid;
 
   return (

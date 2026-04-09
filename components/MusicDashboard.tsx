@@ -8,7 +8,7 @@ import {
 } from "recharts";
 
 // ── api ───────────────────────────────────────────────────────────────────────
-async function lfm(method, extra = {}) {
+async function lfm(method: string, extra: Record<string, string> = {}) {
   const params = new URLSearchParams({ method, ...extra });
   const res = await fetch(`/api/lastfm?${params.toString()}`);
   if (!res.ok) throw new Error(`API ${res.status}`);

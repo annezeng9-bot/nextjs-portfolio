@@ -1,4 +1,4 @@
-﻿import styles from './data.module.css';
+import styles from './data.module.css';
 
 export const metadata = { title: 'Anne Zeng' };
 
@@ -6,14 +6,20 @@ const projects = [
   {
     tag: 'Analytics',
     title: 'Jalen Tracker',
-    description: 'A rigorous, data-driven study on the undeniable winning advantage of having players named Jalen on an NBA roster.',
+    description: 'A highly analytical, game-breaking analysis dashboard on the impact of players named Jalen on a NBA team.',
     url: '/data/jalen',
   },
   {
     tag: 'Data',
     title: 'Workout Log',
-    description: 'Personal workout dashboard that tracks total weight lifted across sessions, with detailed breakdowns by exercise group and other relevant metrics.',
+    description: 'Personal workout dashboard tracking overall weight lifted over the course of my workouts and the breakdown of the exercise groups and other relevant information.',
     url: '/data/workout',
+  },
+  {
+    tag: 'Live Data',
+    title: 'Listening History',
+    description: 'A live music dashboard pulling from Last.fm — genre composition, listening trends, hidden gems, and year-over-year breakdowns from 2014 to present.',
+    url: '/data/music',
   },
 ];
 

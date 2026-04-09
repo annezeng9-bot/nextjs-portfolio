@@ -49,6 +49,7 @@ export default function RootLayout({
       <body>
         <Nav />
         <main>{children}</main>
+	<Analytics />
       </body>
     </html>
   );

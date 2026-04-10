@@ -263,8 +263,10 @@ export default function MusicDashboard() {
   const today     = new Date();
   const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
   const yrNow     = today.getFullYear();
-  const yr1       = 2024;
-  const yr2       = 2022;
+  const yr1       = yrNow - 1;
+  const yr2       = yrNow - 2;
+  const yr3       = yrNow - 3;
+  const yr4       = yrNow - 4;
   const ydayLabel = yesterday.toLocaleDateString("en-US",{month:"short",day:"numeric"});
   const monThisWk = mondayOf(today);
   const sunThisWk = new Date(monThisWk); sunThisWk.setUTCDate(monThisWk.getUTCDate()+6);
@@ -287,11 +289,15 @@ export default function MusicDashboard() {
     const yd0 = new Date(yesterday);
     const yd1 = new Date(yesterday); yd1.setFullYear(yr1);
     const yd2 = new Date(yesterday); yd2.setFullYear(yr2);
+    const yd3 = new Date(yesterday); yd3.setFullYear(yr3);
+    const yd4 = new Date(yesterday); yd4.setFullYear(yr4);
 
     Promise.all([
       fetchDay(yd0).then(d=>[yrNow,d]),
       fetchDay(yd1).then(d=>[yr1,d]),
       fetchDay(yd2).then(d=>[yr2,d]),
+      fetchDay(yd3).then(d=>[yr3,d]),
+      fetchDay(yd4).then(d=>[yr4,d]),
     ]).then(rows => {
       setDayData(Object.fromEntries(rows));
     }).catch(e => setLoadErr(p=>({...p,day:e.message})));
@@ -305,10 +311,17 @@ export default function MusicDashboard() {
     const end1 = new Date(mon1); end1.setUTCDate(mon1.getUTCDate()+6);
     const end2 = new Date(mon2); mon2.setUTCDate(mon2.getUTCDate()+6); // reuse mon2 as end
 
+    const mon3 = new Date(mon0); mon3.setFullYear(yr3);
+    const end3 = new Date(mon3); end3.setUTCDate(mon3.getUTCDate()+6);
+    const mon4 = new Date(mon0); mon4.setFullYear(yr4);
+    const end4 = new Date(mon4); end4.setUTCDate(mon4.getUTCDate()+6);
+
     Promise.all([
       fetchWeek(mon0, end0).then(d=>[yrNow,{...d,partial:true}]),
       fetchWeek(mon1, end1).then(d=>[yr1, d]),
       fetchWeek(mon2, new Date(mon2)).then(d=>[yr2, d]),
+      fetchWeek(mon3, end3).then(d=>[yr3, d]),
+      fetchWeek(mon4, end4).then(d=>[yr4, d]),
     ]).then(rows => {
       setWeekData(Object.fromEntries(rows));
     }).catch(e => setLoadErr(p=>({...p,week:e.message})));
@@ -316,7 +329,7 @@ export default function MusicDashboard() {
 
   }, []);
 
-  const yearsOrdered = [yr2, yr1, yrNow]; // 2022, 2024, current year
+  const yearsOrdered = [yr4, yr3, yr2, yr1, yrNow];
 
   return (
     <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
@@ -352,7 +365,7 @@ export default function MusicDashboard() {
           {!dayData && !loadErr.day && <Spinner/>}
           {loadErr.day && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.day}</div>}
           {dayData && (
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12}}>
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (

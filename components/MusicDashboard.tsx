@@ -86,8 +86,8 @@ async function fetchArtistInfo(artist) {
 }
 
 // ── palette ───────────────────────────────────────────────────────────────────
-const YC  = { "2022":"#34d399","2023":"#6b7280","2024":"#60a5fa","2025":"#a78bfa","2026":"#f5a623" };
-const YBG = { "2022":"rgba(52,211,153,0.12)","2023":"rgba(107,114,128,0.12)","2024":"rgba(96,165,250,0.12)","2025":"rgba(167,139,250,0.12)","2026":"rgba(245,166,35,0.12)" };
+const YC  = { "2021":"#e879f9","2022":"#fb923c","2023":"#6b7280","2024":"#60a5fa","2025":"#a78bfa","2026":"#f5a623" };
+const YBG = { "2021":"rgba(232,121,249,0.12)","2022":"rgba(251,146,60,0.12)","2023":"rgba(107,114,128,0.12)","2024":"rgba(96,165,250,0.12)","2025":"rgba(167,139,250,0.12)","2026":"rgba(245,166,35,0.12)" };
 const GC  = {
   "K-Pop":"#ff6b9d","K-R&B/Hip-Hop":"#c084fc","Indie Pop":"#86efac",
   "R&B":"#fbbf24","Pop":"#60a5fa","Hip-Hop":"#f97316",
@@ -267,6 +267,7 @@ export default function MusicDashboard() {
   const yr2       = yrNow - 2;
   const yr3       = yrNow - 3;
   const yr4       = yrNow - 4;
+  const yr5       = yrNow - 5;
   const ydayLabel = yesterday.toLocaleDateString("en-US",{month:"short",day:"numeric"});
   const monThisWk = mondayOf(today);
   const sunThisWk = new Date(monThisWk); sunThisWk.setUTCDate(monThisWk.getUTCDate()+6);
@@ -291,6 +292,7 @@ export default function MusicDashboard() {
     const yd2 = new Date(yesterday); yd2.setFullYear(yr2);
     const yd3 = new Date(yesterday); yd3.setFullYear(yr3);
     const yd4 = new Date(yesterday); yd4.setFullYear(yr4);
+    const yd5 = new Date(yesterday); yd5.setFullYear(yr5);
 
     Promise.all([
       fetchDay(yd0).then(d=>[yrNow,d]),
@@ -298,6 +300,7 @@ export default function MusicDashboard() {
       fetchDay(yd2).then(d=>[yr2,d]),
       fetchDay(yd3).then(d=>[yr3,d]),
       fetchDay(yd4).then(d=>[yr4,d]),
+      fetchDay(yd5).then(d=>[yr5,d]),
     ]).then(rows => {
       setDayData(Object.fromEntries(rows));
     }).catch(e => setLoadErr(p=>({...p,day:e.message})));
@@ -315,6 +318,8 @@ export default function MusicDashboard() {
     const end3 = new Date(mon3); end3.setUTCDate(mon3.getUTCDate()+6);
     const mon4 = new Date(mon0); mon4.setFullYear(yr4);
     const end4 = new Date(mon4); end4.setUTCDate(mon4.getUTCDate()+6);
+    const mon5 = new Date(mon0); mon5.setFullYear(yr5);
+    const end5 = new Date(mon5); end5.setUTCDate(mon5.getUTCDate()+6);
 
     Promise.all([
       fetchWeek(mon0, end0).then(d=>[yrNow,{...d,partial:true}]),
@@ -322,6 +327,7 @@ export default function MusicDashboard() {
       fetchWeek(mon2, new Date(mon2)).then(d=>[yr2, d]),
       fetchWeek(mon3, end3).then(d=>[yr3, d]),
       fetchWeek(mon4, end4).then(d=>[yr4, d]),
+      fetchWeek(mon5, end5).then(d=>[yr5, d]),
     ]).then(rows => {
       setWeekData(Object.fromEntries(rows));
     }).catch(e => setLoadErr(p=>({...p,week:e.message})));
@@ -329,7 +335,7 @@ export default function MusicDashboard() {
 
   }, []);
 
-  const yearsOrdered = [yr4, yr3, yr2, yr1, yrNow];
+  const yearsOrdered = [yr5, yr4, yr3, yr2, yr1, yrNow];
 
   return (
     <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
@@ -339,10 +345,27 @@ export default function MusicDashboard() {
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
         .hov:hover{background:#181818!important;border-color:#2a2a2a!important}
         .btn:hover{opacity:1!important}
+        @media(max-width:768px){
+          .yday-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
+          .week-artists-grid{grid-template-columns:repeat(2,1fr)!important}
+          .week-top-grid{grid-template-columns:1fr!important}
+          .genre-era-grid{grid-template-columns:repeat(2,1fr)!important}
+          .genre-shift-grid{grid-template-columns:1fr!important}
+          .albums-grid{grid-template-columns:repeat(2,1fr)!important}
+          .disc-grid{grid-template-columns:1fr!important}
+          .niche-callout-grid{grid-template-columns:1fr!important}
+          .dash-header{flex-direction:column!important;align-items:flex-start!important}
+          .dash-header-stats{gap:16px!important}
+        }
+        @media(max-width:480px){
+          .yday-grid{grid-template-columns:1fr!important}
+          .week-artists-grid{grid-template-columns:1fr!important}
+          .albums-grid{grid-template-columns:1fr!important}
+        }
       `}</style>
 
       {/* HEADER */}
-      <div style={{borderBottom:"1px solid #181818",padding:"32px 36px 28px",display:"flex",alignItems:"flex-end",justifyContent:"space-between",flexWrap:"wrap",gap:20}}>
+      <div className="dash-header" style={{borderBottom:"1px solid #181818",padding:"32px 36px 28px",display:"flex",alignItems:"flex-end",justifyContent:"space-between",flexWrap:"wrap",gap:20}}>
         <div>
           <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.18em",color:"#f5a62340",textTransform:"uppercase",marginBottom:8}}>last.fm · live</div>
           <h1 style={{margin:0,fontSize:"clamp(28px,5vw,48px)",fontWeight:800,letterSpacing:"-0.02em",lineHeight:1}}>Listening<br/><span style={{color:"#f5a623"}}>History</span></h1>
@@ -357,7 +380,7 @@ export default function MusicDashboard() {
         </div>
       </div>
 
-      <div style={{padding:"36px 36px 0",display:"grid",gap:48}}>
+      <div style={{padding:"clamp(16px,4vw,36px) clamp(12px,4vw,36px) 0",display:"grid",gap:48}}>
 
         {/* ── YESTERDAY (LIVE) ── */}
         <section>
@@ -365,7 +388,7 @@ export default function MusicDashboard() {
           {!dayData && !loadErr.day && <Spinner/>}
           {loadErr.day && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.day}</div>}
           {dayData && (
-            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12}}>
+            <div className="yday-grid" style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:12}}>
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (
@@ -409,7 +432,7 @@ export default function MusicDashboard() {
           {!weekData && !loadErr.week && <Spinner/>}
           {loadErr.week && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.week}</div>}
           {weekData && (
-            <div style={{display:"grid",gridTemplateColumns:"1fr 2fr",gap:20}}>
+            <div className="week-top-grid" style={{display:"grid",gridTemplateColumns:"1fr 2fr",gap:20}}>
               <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 12px"}}>
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>scrobbles this week</div>
                 {yearsOrdered.map(yr=>{
@@ -430,7 +453,7 @@ export default function MusicDashboard() {
               </div>
               <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 20px 16px"}}>
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>top artists this week</div>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+                <div className="week-artists-grid" style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:12}}>
                   {yearsOrdered.map(yr=>{
                     const w=weekData[yr]; if (!w) return null;
                     return (
@@ -510,7 +533,7 @@ export default function MusicDashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
+            <div className="genre-era-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
               {[{era:"2014–15",copy:"Pure pop era. 1D, Taylor, JB dominate.",accent:"#60a5fa"},{era:"2016",copy:"Transition. Pop fades, nothing new yet.",accent:"#6b7280"},{era:"2021–24",copy:"K-Pop takeover. Up to 38% of all plays.",accent:"#ff6b9d"},{era:"2025–26",copy:"R&B, Pop, Afrobeats diversify the mix.",accent:"#34d399"}].map(({era,copy,accent})=>(
                 <div key={era} style={{borderLeft:`2px solid ${accent}`,paddingLeft:12}}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:4}}>{era}</div>
@@ -568,7 +591,7 @@ export default function MusicDashboard() {
         {/* ── GENRE SHIFTS + RADAR ── */}
         <section>
           <SL>Genre Shifts · 2014 → 2026</SL>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+          <div className="genre-shift-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {GENRE_SHIFTS.map(({genre,delta,from,to,dir})=>(
                 <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"12px 16px"}}>
@@ -619,7 +642,7 @@ export default function MusicDashboard() {
         {/* ── TOP ALBUMS ── */}
         <section>
           <SL>Top Albums · Rolling by Year</SL>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+          <div className="albums-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
             {Object.entries(TOP_ALBUMS).map(([yr,albums])=>{
               const y=Number(yr); const col=ERA_COLOR[y]; const lbl=ERA_LABEL[y];
               return (
@@ -687,7 +710,7 @@ export default function MusicDashboard() {
                 <Area type="monotone" dataKey="niche" stroke="#a78bfa" strokeWidth={2} fill="url(#gNiche)" dot={{r:3,fill:"#a78bfa",strokeWidth:0}} connectNulls={false}/>
               </AreaChart>
             </ResponsiveContainer>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
+            <div className="niche-callout-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
               {[
                 {era:"2014–16",stat:"65–82%",label:"mainstream",color:"#60a5fa",note:"Pop monoculture. Almost no niche listening."},
                 {era:"2023–24",stat:"30–35%",label:"mainstream",color:"#a78bfa",note:"K-Pop deep cuts hit niche majority."},
@@ -707,7 +730,7 @@ export default function MusicDashboard() {
         {/* ── NEW DISCOVERIES ── */}
         <section>
           <SL>New Artist Discoveries · Per Year</SL>
-          <div style={{display:"grid",gridTemplateColumns:"3fr 2fr",gap:20}}>
+          <div className="disc-grid" style={{display:"grid",gridTemplateColumns:"3fr 2fr",gap:20}}>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 16px"}}>
               <div style={{fontSize:11,fontFamily:"'IBM Plex Mono',monospace",color:"#555",marginBottom:16}}>Artists heard for the first time — click a bar</div>
               <ResponsiveContainer width="100%" height={220}>

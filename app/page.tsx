@@ -5,7 +5,6 @@ import styles from './page.module.css';
 
 const categories = [
   { label: 'Dragon Boat', key: 'dragonboat' },
-  { label: '3x3', key: 'threebythree' },
   { label: 'Travel', key: 'travel' },
   { label: 'Events', key: 'liveevents' },
   { label: 'iPhone', key: 'iphone' },

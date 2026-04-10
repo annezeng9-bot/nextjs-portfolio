@@ -129,7 +129,7 @@ const GENRE_SHIFTS = [
   {genre:"Indie Pop",    delta:+4.3, from:0.1, to:4.4, dir:"up"},
   {genre:"K-R&B/Hip-Hop",delta:+1.9,from:0.0, to:1.9, dir:"up"},
 ];
-const RADAR_DATA = GENRES.map(g=>({genre:g,"2014":GENRE_STACKED[0][g]||0,"2021":GENRE_STACKED[4][g]||0,"2022":GENRE_STACKED[5][g]||0,"2023":GENRE_STACKED[6][g]||0,"2024":GENRE_STACKED[7][g]||0,"2025":GENRE_STACKED[8][g]||0,"2026":GENRE_STACKED[9][g]||0}));
+const RADAR_DATA = GENRES.filter(g=>g!=="Pop").map(g=>({genre:g,"2014":GENRE_STACKED[0][g]||0,"2021":GENRE_STACKED[4][g]||0,"2022":GENRE_STACKED[5][g]||0,"2023":GENRE_STACKED[6][g]||0,"2024":GENRE_STACKED[7][g]||0,"2025":GENRE_STACKED[8][g]||0,"2026":GENRE_STACKED[9][g]||0}));
 
 const ERA_COLOR = {2014:"#60a5fa",2015:"#60a5fa",2016:"#93c5fd",2021:"#ff6b9d",2022:"#ff6b9d",2023:"#f472b6",2024:"#a78bfa",2025:"#a78bfa",2026:"#f5a623"};
 const ERA_LABEL = {2014:"western pop",2015:"western pop",2016:"transition",2021:"k-pop era",2022:"k-pop era",2023:"k-pop era",2024:"k-pop / r&b",2025:"k-pop / r&b",2026:"present"};
@@ -195,7 +195,7 @@ const YP = ({year}) => {
   return <span style={{display:"inline-block",padding:"2px 8px",borderRadius:2,background:bg,color:c,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.06em",fontWeight:600,border:`1px solid ${c}40`}}>{year}</span>;
 };
 const SL = ({children}) => (
-  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,letterSpacing:"0.2em",color:"#6b7280",textTransform:"uppercase",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
+  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"clamp(8px,1.5vw,10px)",letterSpacing:"0.2em",color:"#6b7280",textTransform:"uppercase",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
     <span style={{display:"inline-block",width:24,height:1,background:"#333"}}/>
     {children}
     <span style={{flex:1,height:1,background:"#1c1c1c"}}/>
@@ -338,9 +338,10 @@ export default function MusicDashboard() {
   const yearsOrdered = [yr5, yr4, yr3, yr2, yr1, yrNow];
 
   return (
-    <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
+    <div className="dash-body" style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
+        .dash-body{font-size:13px}
         *{box-sizing:border-box}
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
         .hov:hover{background:#181818!important;border-color:#2a2a2a!important}
@@ -384,6 +385,14 @@ export default function MusicDashboard() {
           .week-artists-grid{grid-template-columns:repeat(2,1fr)!important}
           .albums-grid{grid-template-columns:1fr!important}
           .genre-era-grid{grid-template-columns:1fr!important}
+          .dash-body{font-size:11px!important}
+          .dash-body .sl-label{font-size:9px!important;letter-spacing:0.12em!important}
+        }
+        @media(max-width:600px){
+          .dash-body *{font-size:inherit}
+          .dash-body h1{font-size:22px!important}
+          .dash-body .mono-sm{font-size:9px!important}
+          .recharts-text{font-size:8px!important}
         }
       `}</style>
 
@@ -430,7 +439,7 @@ export default function MusicDashboard() {
                     <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:12}}>top 3 tracks</div>
                     {d.tracks.map(([t,a],i)=>(
                       <div key={i} style={{paddingBottom:8,marginBottom:8,borderBottom:i<2?"1px solid #181818":"none"}}>
-                        <div style={{fontSize:13,fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t}</div>
+                        <div style={{fontSize:"clamp(10px,1.8vw,13px)",fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t}</div>
                         <div style={{fontSize:11,color:"#555",fontFamily:"'IBM Plex Mono',monospace",marginTop:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a}</div>
                       </div>
                     ))}
@@ -636,7 +645,7 @@ export default function MusicDashboard() {
             </div>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 12px 16px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em"}}>Genre Fingerprint</div>
+                <div><div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em"}}>Genre Fingerprint</div><div style={{fontSize:9,fontFamily:"'IBM Plex Mono',monospace",color:"#333",marginTop:2}}>Pop excluded — see stacked bar above</div></div>
                 <div style={{display:"flex",gap:8}}>
                   {["all","2014","2021","2022","2023","2024","2025","2026"].map(y=>(
                     <button key={y} className="btn" onClick={()=>setRadarYr(y)}
@@ -662,7 +671,7 @@ export default function MusicDashboard() {
                 <RadarChart data={RADAR_DATA} margin={{top:10,right:28,bottom:10,left:28}}>
                   <PolarGrid stroke="#1e1e1e"/>
                   <PolarAngleAxis dataKey="genre" tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fill:"#666"}}/>
-                  <PolarRadiusAxis angle={30} domain={[0,45]} tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fill:"#333"}} tickCount={3} tickFormatter={v=>`${v}%`}/>
+                  <PolarRadiusAxis angle={30} domain={[0,25]} tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fill:"#333"}} tickCount={3} tickFormatter={v=>`${v}%`}/>
                   {["2014","2021","2022","2023","2024","2025","2026"].filter(y=>radarYr==="all"||radarYr===y).map(y=>(
                     <Radar key={y} name={y} dataKey={y} stroke={YC[y]||"#888"} fill={YC[y]||"#888"} fillOpacity={radarYr==="all"?0.08:0.15} strokeWidth={radarYr==="all"?1.5:2}/>
                   ))}

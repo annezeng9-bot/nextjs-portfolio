@@ -86,8 +86,8 @@ async function fetchArtistInfo(artist) {
 }
 
 // ── palette ───────────────────────────────────────────────────────────────────
-const YC  = { "2021":"#e879f9","2022":"#fb923c","2023":"#6b7280","2024":"#60a5fa","2025":"#a78bfa","2026":"#f5a623" };
-const YBG = { "2021":"rgba(232,121,249,0.12)","2022":"rgba(251,146,60,0.12)","2023":"rgba(107,114,128,0.12)","2024":"rgba(96,165,250,0.12)","2025":"rgba(167,139,250,0.12)","2026":"rgba(245,166,35,0.12)" };
+const YC  = { "2021":"#f87171","2022":"#fb923c","2023":"#6b7280","2024":"#60a5fa","2025":"#a78bfa","2026":"#f5a623" };
+const YBG = { "2021":"rgba(248,113,113,0.12)","2022":"rgba(251,146,60,0.12)","2023":"rgba(107,114,128,0.12)","2024":"rgba(96,165,250,0.12)","2025":"rgba(167,139,250,0.12)","2026":"rgba(245,166,35,0.12)" };
 const GC  = {
   "K-Pop":"#ff6b9d","K-R&B/Hip-Hop":"#c084fc","Indie Pop":"#86efac",
   "R&B":"#fbbf24","Pop":"#60a5fa","Hip-Hop":"#f97316",
@@ -388,7 +388,8 @@ export default function MusicDashboard() {
           {!dayData && !loadErr.day && <Spinner/>}
           {loadErr.day && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.day}</div>}
           {dayData && (
-            <div className="yday-grid" style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:12}}>
+            <div style={{overflowX:"auto"}}>
+            <div className="yday-grid" style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:12,minWidth:720}}>
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (
@@ -398,23 +399,23 @@ export default function MusicDashboard() {
                   </div>
                 );
                 return (
-                  <div key={yr} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 20px 16px",borderTop:`2px solid ${c}`}}>
+                  <div key={yr} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"14px 12px 12px",borderTop:`2px solid ${c}`}}>
                     <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:16}}>
                       <YP year={yr}/>
-                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:20,fontWeight:600,color:c}}>{d.count.toLocaleString()}</span>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:16,fontWeight:600,color:c}}>{d.count.toLocaleString()}</span>
                     </div>
                     <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:12}}>top 3 tracks</div>
                     {d.tracks.map(([t,a],i)=>(
                       <div key={i} style={{paddingBottom:8,marginBottom:8,borderBottom:i<2?"1px solid #181818":"none"}}>
                         <div style={{fontSize:13,fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t}</div>
-                        <div style={{fontSize:11,color:"#555",fontFamily:"'IBM Plex Mono',monospace",marginTop:2}}>{a}</div>
+                        <div style={{fontSize:11,color:"#555",fontFamily:"'IBM Plex Mono',monospace",marginTop:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a}</div>
                       </div>
                     ))}
                     <div style={{marginTop:14,paddingTop:12,borderTop:"1px solid #181818"}}>
                       <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>most played</div>
                       {d.artists.map(([a,ct],i)=>(
                         <div key={i} style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-                          <span style={{fontSize:12,color:"#aaa",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"75%"}}>{a}</span>
+                          <span style={{fontSize:11,color:"#aaa",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}}>{a}</span>
                           <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:c,flexShrink:0,marginLeft:8}}>{ct}</span>
                         </div>
                       ))}
@@ -422,6 +423,7 @@ export default function MusicDashboard() {
                   </div>
                 );
               })}
+            </div>
             </div>
           )}
         </section>

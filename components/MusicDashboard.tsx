@@ -1,6 +1,16 @@
 // @ts-nocheck
 "use client";
 import { useState, useEffect } from "react";
+
+function useW() {
+  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return w;
+}
 import {
   LineChart, Line, BarChart, Bar, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, Cell,
@@ -282,6 +292,7 @@ export default function MusicDashboard() {
   const [hidden,    setHidden]    = useState(new Set());
   const [radarYr,   setRadarYr]   = useState("all");
   const [discYear,  setDiscYear]  = useState(null);
+  const w = useW();
 
   const toggleG = g => setHidden(p=>{const n=new Set(p);n.has(g)?n.delete(g):n.add(g);return n;});
 
@@ -338,83 +349,32 @@ export default function MusicDashboard() {
   const yearsOrdered = [yr5, yr4, yr3, yr2, yr1, yrNow];
 
   return (
-    <div className="dash-body" style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
+    <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
         *{box-sizing:border-box}
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
         .hov:hover{background:#181818!important;border-color:#2a2a2a!important}
         .btn:hover{opacity:1!important}
-
-        .dash-inner{padding:36px 36px 0;display:grid;gap:48px}
-        .dash-header{padding:28px 36px 24px;border-bottom:1px solid #181818;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
-        .dash-header-stats{display:flex;gap:32px;flex-wrap:wrap}
-
-        .yday-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-        .yday-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;width:max-content;min-width:100%}
-
-        .week-top-grid{display:grid;grid-template-columns:1fr 2fr;gap:20px}
-        .week-artists-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-
-        .genre-era-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid #181818}
-        .genre-arcs-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
-        .genre-shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-        .albums-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-        .disc-grid{display:grid;grid-template-columns:3fr 2fr;gap:20px}
-        .niche-callout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid #181818}
-
-        @media(max-width:900px){
-          .dash-inner{padding:20px 16px 0;gap:32px}
-          .dash-header{padding:16px 16px 14px}
-          .dash-header-stats{gap:16px}
-          .yday-grid{grid-template-columns:repeat(3,minmax(140px,1fr))!important}
-          .week-top-grid{grid-template-columns:1fr!important}
-          .week-artists-grid{grid-template-columns:repeat(3,1fr)!important}
-          .genre-arcs-grid{grid-template-columns:1fr!important}
-          .genre-shift-grid{grid-template-columns:1fr!important}
-          .genre-era-grid{grid-template-columns:repeat(2,1fr)!important}
-          .albums-grid{grid-template-columns:repeat(2,1fr)!important}
-          .disc-grid{grid-template-columns:1fr!important}
-          .niche-callout-grid{grid-template-columns:1fr!important}
-        }
-
-        @media(max-width:600px){
-          .dash-inner{padding:14px 12px 0;gap:24px}
-          .dash-header{padding:12px 12px 10px;flex-direction:column;align-items:flex-start;gap:10px}
-          .dash-header-stats{gap:12px}
-          .dash-header-stats>div{text-align:left!important}
-          .yday-grid{grid-template-columns:repeat(2,minmax(130px,1fr))!important}
-          .week-artists-grid{grid-template-columns:repeat(2,1fr)!important}
-          .albums-grid{grid-template-columns:1fr!important}
-          .genre-era-grid{grid-template-columns:repeat(2,1fr)!important}
-          .genre-shift-grid{grid-template-columns:1fr!important}
-          .recharts-cartesian-axis-tick-value{font-size:8px!important}
-          .recharts-text{font-size:8px!important}
-        }
-
-        @media(max-width:400px){
-          .yday-grid{grid-template-columns:1fr!important}
-          .genre-era-grid{grid-template-columns:1fr!important}
-        }
       `}</style>
 
       {/* HEADER */}
-      <div className="dash-header">
+      <div style={{padding:w<600?"12px 12px 10px":w<900?"16px 16px 14px":"28px 36px 24px",borderBottom:"1px solid #181818",display:"flex",alignItems:w<600?"flex-start":"flex-end",justifyContent:"space-between",flexWrap:"wrap",gap:12,flexDirection:w<600?"column":"row"}}>
         <div>
           <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.18em",color:"#f5a62340",textTransform:"uppercase",marginBottom:8}}>last.fm · live</div>
-          <h1 style={{margin:0,fontSize:"clamp(18px,4vw,36px)",fontWeight:800,letterSpacing:"-0.02em",lineHeight:1}}>Listening<br/><span style={{color:"#f5a623"}}>History</span></h1>
+          <h1 style={{margin:0,fontSize:w<600?18:w<900?24:36,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1}}>Listening<br/><span style={{color:"#f5a623"}}>History</span></h1>
         </div>
-        <div className="dash-header-stats">
+        <div style={{display:"flex",gap:32,flexWrap:"wrap"}}>
           {[{l:"on record since",v:"2008"},{l:"total scrobbles",v:"182,000+"},{l:"yesterday",v:ydayLabel}].map(s=>(
             <div key={s.l} style={{textAlign:"right"}}>
               <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,letterSpacing:"0.12em",color:"#555",textTransform:"uppercase",marginBottom:4}}>{s.l}</div>
-              <div style={{fontSize:"clamp(13px,2.5vw,18px)",fontWeight:700}}>{s.v}</div>
+              <div style={{fontSize:w<600?13:18,fontWeight:700}}>{s.v}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="dash-inner">
+      <div style={{padding:w<600?"14px 12px 0":w<900?"20px 16px 0":"36px 36px 0",display:"grid",gap:w<600?24:w<900?32:48}}>
 
         {/* ── YESTERDAY (LIVE) ── */}
         <section>
@@ -422,8 +382,8 @@ export default function MusicDashboard() {
           {!dayData && !loadErr.day && <Spinner/>}
           {loadErr.day && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.day}</div>}
           {dayData && (
-            <div className="yday-scroll">
-            <div className="yday-grid">
+            <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
+            <div style={{display:"grid",gridTemplateColumns:w<480?"repeat(2,minmax(130px,1fr))":w<900?"repeat(3,minmax(130px,1fr))":"repeat(6,minmax(130px,1fr))",gap:8}}>
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (
@@ -468,7 +428,7 @@ export default function MusicDashboard() {
           {!weekData && !loadErr.week && <Spinner/>}
           {loadErr.week && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.week}</div>}
           {weekData && (
-            <div className="week-top-grid">
+            <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"1fr 2fr",gap:16}}>
               <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 12px"}}>
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>scrobbles this week</div>
                 {yearsOrdered.map(yr=>{
@@ -489,7 +449,7 @@ export default function MusicDashboard() {
               </div>
               <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 20px 16px"}}>
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>top artists this week</div>
-                <div className="week-artists-grid">
+                <div style={{display:"grid",gridTemplateColumns:w<600?"repeat(2,1fr)":w<900?"repeat(3,1fr)":"repeat(6,1fr)",gap:10}}>
                   {yearsOrdered.map(yr=>{
                     const w=weekData[yr]; if (!w) return null;
                     return (
@@ -569,7 +529,7 @@ export default function MusicDashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="genre-era-grid">
+            <div style={{display:"grid",gridTemplateColumns:w<480?"1fr":w<900?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
               {[{era:"2014–15",copy:"Pure pop era. 1D, Taylor, JB dominate.",accent:"#60a5fa"},{era:"2016",copy:"Transition. Pop fades, nothing new yet.",accent:"#6b7280"},{era:"2021–24",copy:"K-Pop takeover. Up to 38% of all plays.",accent:"#ff6b9d"},{era:"2025–26",copy:"R&B, Pop, Afrobeats diversify the mix.",accent:"#34d399"}].map(({era,copy,accent})=>(
                 <div key={era} style={{borderLeft:`2px solid ${accent}`,paddingLeft:12}}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:4}}>{era}</div>
@@ -582,7 +542,7 @@ export default function MusicDashboard() {
 
         {/* ── GENRE ARCS + DIVERSITY ── */}
         <section>
-          <div className="genre-arcs-grid">
+          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"2fr 1fr",gap:20}}>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"24px 16px 16px"}}>
               <SL>Genre Arcs</SL>
               <ResponsiveContainer width="100%" height={260}>
@@ -627,7 +587,7 @@ export default function MusicDashboard() {
         {/* ── GENRE SHIFTS + RADAR ── */}
         <section>
           <SL>Genre Shifts · 2014 → 2026</SL>
-          <div className="genre-shift-grid">
+          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"1fr 1fr",gap:20}}>
             <div style={{display:"flex",flexDirection:"column",gap:6}}>
               {GENRE_SHIFTS.map(({genre,delta,from,to,dir})=>(
                 <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"10px 14px"}}>
@@ -687,7 +647,7 @@ export default function MusicDashboard() {
         {/* ── TOP ALBUMS ── */}
         <section>
           <SL>Top Albums · Rolling by Year</SL>
-          <div className="albums-grid">
+          <div style={{display:"grid",gridTemplateColumns:w<600?"1fr":w<900?"repeat(2,1fr)":"repeat(3,1fr)",gap:12}}>
             {Object.entries(TOP_ALBUMS).map(([yr,albums])=>{
               const y=Number(yr); const col=ERA_COLOR[y]; const lbl=ERA_LABEL[y];
               return (
@@ -755,7 +715,7 @@ export default function MusicDashboard() {
                 <Area type="monotone" dataKey="niche" stroke="#a78bfa" strokeWidth={2} fill="url(#gNiche)" dot={{r:3,fill:"#a78bfa",strokeWidth:0}} connectNulls={false}/>
               </AreaChart>
             </ResponsiveContainer>
-            <div className="niche-callout-grid">
+            <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"repeat(3,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
               {[
                 {era:"2014–16",stat:"65–82%",label:"mainstream",color:"#60a5fa",note:"Pop monoculture. Almost no niche listening."},
                 {era:"2023–24",stat:"30–35%",label:"mainstream",color:"#a78bfa",note:"K-Pop deep cuts hit niche majority."},
@@ -775,7 +735,7 @@ export default function MusicDashboard() {
         {/* ── NEW DISCOVERIES ── */}
         <section>
           <SL>New Artist Discoveries · Per Year</SL>
-          <div className="disc-grid">
+          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"3fr 2fr",gap:20}}>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 16px"}}>
               <div style={{fontSize:11,fontFamily:"'IBM Plex Mono',monospace",color:"#555",marginBottom:16}}>Artists heard for the first time — click a bar</div>
               <ResponsiveContainer width="100%" height={220}>

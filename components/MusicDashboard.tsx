@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 
 function useW() {
-  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  const [w, setW] = useState(1400);
   useEffect(() => {
+    setW(window.innerWidth);
     const h = () => setW(window.innerWidth);
     window.addEventListener("resize", h);
     return () => window.removeEventListener("resize", h);

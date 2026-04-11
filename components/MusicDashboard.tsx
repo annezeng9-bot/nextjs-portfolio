@@ -2,16 +2,6 @@
 "use client";
 import { useState, useEffect } from "react";
 
-function useW() {
-  const [w, setW] = useState(1400);
-  useEffect(() => {
-    setW(window.innerWidth);
-    const h = () => setW(window.innerWidth);
-    window.addEventListener("resize", h);
-    return () => window.removeEventListener("resize", h);
-  }, []);
-  return w;
-}
 import {
   LineChart, Line, BarChart, Bar, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, Cell,
@@ -293,7 +283,6 @@ export default function MusicDashboard() {
   const [hidden,    setHidden]    = useState(new Set());
   const [radarYr,   setRadarYr]   = useState("all");
   const [discYear,  setDiscYear]  = useState(null);
-  const w = useW();
 
   const toggleG = g => setHidden(p=>{const n=new Set(p);n.has(g)?n.delete(g):n.add(g);return n;});
 
@@ -384,7 +373,7 @@ export default function MusicDashboard() {
           {loadErr.day && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.day}</div>}
           {dayData && (
             <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
-            <div style={{display:"grid",gridTemplateColumns:w<480?"repeat(2,minmax(130px,1fr))":w<900?"repeat(3,minmax(130px,1fr))":"repeat(6,minmax(130px,1fr))",gap:8}}>
+            <div style={{display:"grid",gridTemplateColumns:w<480?"repeat(auto-fill,minmax(160px,1fr))":w<900?"repeat(auto-fill,minmax(160px,1fr))":"repeat(auto-fill,minmax(160px,1fr))",gap:8}}>
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (
@@ -450,7 +439,7 @@ export default function MusicDashboard() {
               </div>
               <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 20px 16px"}}>
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>top artists this week</div>
-                <div style={{display:"grid",gridTemplateColumns:w<600?"repeat(2,1fr)":w<900?"repeat(3,1fr)":"repeat(6,1fr)",gap:10}}>
+                <div style={{display:"grid",gridTemplateColumns:w<600?"repeat(2,1fr)":w<900?"repeat(auto-fill,minmax(200px,1fr))":"repeat(6,1fr)",gap:10}}>
                   {yearsOrdered.map(yr=>{
                     const w=weekData[yr]; if (!w) return null;
                     return (
@@ -530,7 +519,7 @@ export default function MusicDashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:w<480?"1fr":w<900?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
+            <div style={{display:"grid",gridTemplateColumns:w<480?"1fr":w<900?"repeat(2,1fr)":"repeat(auto-fit,minmax(180px,1fr))",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
               {[{era:"2014–15",copy:"Pure pop era. 1D, Taylor, JB dominate.",accent:"#60a5fa"},{era:"2016",copy:"Transition. Pop fades, nothing new yet.",accent:"#6b7280"},{era:"2021–24",copy:"K-Pop takeover. Up to 38% of all plays.",accent:"#ff6b9d"},{era:"2025–26",copy:"R&B, Pop, Afrobeats diversify the mix.",accent:"#34d399"}].map(({era,copy,accent})=>(
                 <div key={era} style={{borderLeft:`2px solid ${accent}`,paddingLeft:12}}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:4}}>{era}</div>
@@ -543,7 +532,7 @@ export default function MusicDashboard() {
 
         {/* ── GENRE ARCS + DIVERSITY ── */}
         <section>
-          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"2fr 1fr",gap:20}}>
+          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"repeat(auto-fit,minmax(280px,1fr))",gap:20}}>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"24px 16px 16px"}}>
               <SL>Genre Arcs</SL>
               <ResponsiveContainer width="100%" height={260}>
@@ -588,7 +577,7 @@ export default function MusicDashboard() {
         {/* ── GENRE SHIFTS + RADAR ── */}
         <section>
           <SL>Genre Shifts · 2014 → 2026</SL>
-          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"1fr 1fr",gap:20}}>
+          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"repeat(auto-fit,minmax(280px,1fr))",gap:20}}>
             <div style={{display:"flex",flexDirection:"column",gap:6}}>
               {GENRE_SHIFTS.map(({genre,delta,from,to,dir})=>(
                 <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"10px 14px"}}>
@@ -648,7 +637,7 @@ export default function MusicDashboard() {
         {/* ── TOP ALBUMS ── */}
         <section>
           <SL>Top Albums · Rolling by Year</SL>
-          <div style={{display:"grid",gridTemplateColumns:w<600?"1fr":w<900?"repeat(2,1fr)":"repeat(3,1fr)",gap:12}}>
+          <div style={{display:"grid",gridTemplateColumns:w<600?"1fr":w<900?"repeat(2,1fr)":"repeat(auto-fill,minmax(200px,1fr))",gap:12}}>
             {Object.entries(TOP_ALBUMS).map(([yr,albums])=>{
               const y=Number(yr); const col=ERA_COLOR[y]; const lbl=ERA_LABEL[y];
               return (
@@ -716,7 +705,7 @@ export default function MusicDashboard() {
                 <Area type="monotone" dataKey="niche" stroke="#a78bfa" strokeWidth={2} fill="url(#gNiche)" dot={{r:3,fill:"#a78bfa",strokeWidth:0}} connectNulls={false}/>
               </AreaChart>
             </ResponsiveContainer>
-            <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"repeat(3,1fr)",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
+            <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"repeat(auto-fill,minmax(200px,1fr))",gap:12,marginTop:20,paddingTop:16,borderTop:"1px solid #181818"}}>
               {[
                 {era:"2014–16",stat:"65–82%",label:"mainstream",color:"#60a5fa",note:"Pop monoculture. Almost no niche listening."},
                 {era:"2023–24",stat:"30–35%",label:"mainstream",color:"#a78bfa",note:"K-Pop deep cuts hit niche majority."},
@@ -736,7 +725,7 @@ export default function MusicDashboard() {
         {/* ── NEW DISCOVERIES ── */}
         <section>
           <SL>New Artist Discoveries · Per Year</SL>
-          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"3fr 2fr",gap:20}}>
+          <div style={{display:"grid",gridTemplateColumns:w<900?"1fr":"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 16px"}}>
               <div style={{fontSize:11,fontFamily:"'IBM Plex Mono',monospace",color:"#555",marginBottom:16}}>Artists heard for the first time — click a bar</div>
               <ResponsiveContainer width="100%" height={220}>

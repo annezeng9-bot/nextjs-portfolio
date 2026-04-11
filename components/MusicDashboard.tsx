@@ -373,7 +373,6 @@ export default function MusicDashboard() {
           {!dayData && !loadErr.day && <Spinner/>}
           {loadErr.day && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.day}</div>}
           {dayData && (
-            <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:8}}>
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
@@ -408,7 +407,6 @@ export default function MusicDashboard() {
                   </div>
                 );
               })}
-            </div>
             </div>
           )}
         </section>

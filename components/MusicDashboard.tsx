@@ -195,7 +195,7 @@ const YP = ({year}) => {
   return <span style={{display:"inline-block",padding:"2px 8px",borderRadius:2,background:bg,color:c,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.06em",fontWeight:600,border:`1px solid ${c}40`}}>{year}</span>;
 };
 const SL = ({children}) => (
-  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"clamp(8px,1.5vw,10px)",letterSpacing:"0.2em",color:"#6b7280",textTransform:"uppercase",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
+  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"clamp(9px,1.8vw,10px)",letterSpacing:"0.15em",color:"#6b7280",textTransform:"uppercase",marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
     <span style={{display:"inline-block",width:24,height:1,background:"#333"}}/>
     {children}
     <span style={{flex:1,height:1,background:"#1c1c1c"}}/>
@@ -341,7 +341,6 @@ export default function MusicDashboard() {
     <div className="dash-body" style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
-        .dash-body{font-size:13px}
         *{box-sizing:border-box}
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
         .hov:hover{background:#181818!important;border-color:#2a2a2a!important}
@@ -351,11 +350,11 @@ export default function MusicDashboard() {
         .dash-header{padding:28px 36px 24px;border-bottom:1px solid #181818;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
         .dash-header-stats{display:flex;gap:32px;flex-wrap:wrap}
 
-        .yday-scroll{overflow-x:auto}
-        .yday-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;min-width:700px}
+        .yday-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .yday-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;width:max-content;min-width:100%}
 
         .week-top-grid{display:grid;grid-template-columns:1fr 2fr;gap:20px}
-        .week-artists-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+        .week-artists-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
 
         .genre-era-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid #181818}
         .genre-arcs-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
@@ -365,10 +364,10 @@ export default function MusicDashboard() {
         .niche-callout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid #181818}
 
         @media(max-width:900px){
-          .dash-inner{padding:24px 20px 0;gap:36px}
-          .dash-header{padding:20px 20px 16px}
+          .dash-inner{padding:20px 16px 0;gap:32px}
+          .dash-header{padding:16px 16px 14px}
           .dash-header-stats{gap:16px}
-          .yday-grid{grid-template-columns:repeat(3,1fr)!important;min-width:0!important}
+          .yday-grid{grid-template-columns:repeat(3,minmax(140px,1fr))!important}
           .week-top-grid{grid-template-columns:1fr!important}
           .week-artists-grid{grid-template-columns:repeat(3,1fr)!important}
           .genre-arcs-grid{grid-template-columns:1fr!important}
@@ -378,21 +377,24 @@ export default function MusicDashboard() {
           .disc-grid{grid-template-columns:1fr!important}
           .niche-callout-grid{grid-template-columns:1fr!important}
         }
+
         @media(max-width:600px){
-          .dash-inner{padding:16px 14px 0;gap:28px}
-          .dash-header{padding:16px 14px 12px;flex-direction:column;align-items:flex-start}
-          .yday-grid{grid-template-columns:repeat(2,1fr)!important}
+          .dash-inner{padding:14px 12px 0;gap:24px}
+          .dash-header{padding:12px 12px 10px;flex-direction:column;align-items:flex-start;gap:10px}
+          .dash-header-stats{gap:12px}
+          .dash-header-stats>div{text-align:left!important}
+          .yday-grid{grid-template-columns:repeat(2,minmax(130px,1fr))!important}
           .week-artists-grid{grid-template-columns:repeat(2,1fr)!important}
           .albums-grid{grid-template-columns:1fr!important}
-          .genre-era-grid{grid-template-columns:1fr!important}
-          .dash-body{font-size:11px!important}
-          .dash-body .sl-label{font-size:9px!important;letter-spacing:0.12em!important}
-        }
-        @media(max-width:600px){
-          .dash-body *{font-size:inherit}
-          .dash-body h1{font-size:22px!important}
-          .dash-body .mono-sm{font-size:9px!important}
+          .genre-era-grid{grid-template-columns:repeat(2,1fr)!important}
+          .genre-shift-grid{grid-template-columns:1fr!important}
+          .recharts-cartesian-axis-tick-value{font-size:8px!important}
           .recharts-text{font-size:8px!important}
+        }
+
+        @media(max-width:400px){
+          .yday-grid{grid-template-columns:1fr!important}
+          .genre-era-grid{grid-template-columns:1fr!important}
         }
       `}</style>
 
@@ -400,13 +402,13 @@ export default function MusicDashboard() {
       <div className="dash-header">
         <div>
           <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.18em",color:"#f5a62340",textTransform:"uppercase",marginBottom:8}}>last.fm · live</div>
-          <h1 style={{margin:0,fontSize:"clamp(22px,3.5vw,36px)",fontWeight:800,letterSpacing:"-0.02em",lineHeight:1}}>Listening<br/><span style={{color:"#f5a623"}}>History</span></h1>
+          <h1 style={{margin:0,fontSize:"clamp(18px,4vw,36px)",fontWeight:800,letterSpacing:"-0.02em",lineHeight:1}}>Listening<br/><span style={{color:"#f5a623"}}>History</span></h1>
         </div>
         <div className="dash-header-stats">
           {[{l:"on record since",v:"2008"},{l:"total scrobbles",v:"182,000+"},{l:"yesterday",v:ydayLabel}].map(s=>(
             <div key={s.l} style={{textAlign:"right"}}>
               <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,letterSpacing:"0.12em",color:"#555",textTransform:"uppercase",marginBottom:4}}>{s.l}</div>
-              <div style={{fontSize:18,fontWeight:700}}>{s.v}</div>
+              <div style={{fontSize:"clamp(13px,2.5vw,18px)",fontWeight:700}}>{s.v}</div>
             </div>
           ))}
         </div>
@@ -425,13 +427,13 @@ export default function MusicDashboard() {
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (
-                  <div key={yr} style={{background:"#0a0a0a",border:"1px solid #161616",borderRadius:6,padding:20,borderTop:"2px solid #1e1e1e",opacity:0.4,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:180,gap:10}}>
+                  <div key={yr} style={{background:"#0a0a0a",border:"1px solid #161616",borderRadius:6,padding:16,borderTop:"2px solid #1e1e1e",opacity:0.4,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:140,gap:8,minWidth:0}}>
                     <YP year={yr}/>
                     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#333",marginTop:8,textAlign:"center",lineHeight:1.8}}>no plays<br/>this date</div>
                   </div>
                 );
                 return (
-                  <div key={yr} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"12px 10px 10px",borderTop:`2px solid ${c}`}}>
+                  <div key={yr} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"12px 10px 10px",borderTop:`2px solid ${c}`,minWidth:0,overflow:"hidden"}}>
                     <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:16}}>
                       <YP year={yr}/>
                       <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:16,fontWeight:600,color:c}}>{d.count.toLocaleString()}</span>

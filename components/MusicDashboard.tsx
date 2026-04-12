@@ -340,10 +340,11 @@ export default function MusicDashboard() {
   const yearsOrdered = [yr5, yr4, yr3, yr2, yr1, yrNow];
 
   return (
-    <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60}}>
+    <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60,overflowX:"hidden",maxWidth:"100%"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
-        *{box-sizing:border-box}
+        *{box-sizing:border-box;max-width:100%}
+        img,video,svg,canvas{max-width:100%;display:block}
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
         .hov:hover{background:#181818!important;border-color:#2a2a2a!important}
         .btn:hover{opacity:1!important}
@@ -365,7 +366,7 @@ export default function MusicDashboard() {
         </div>
       </div>
 
-      <div style={{padding:"clamp(14px,3vw,36px) clamp(12px,3vw,36px) 0",display:"grid",gap:"clamp(24px,4vw,48px)"}}>
+      <div style={{padding:"clamp(12px,3vw,36px) clamp(12px,3vw,36px) 0",display:"grid",gap:"clamp(20px,4vw,48px)"}}>
 
         {/* ── YESTERDAY (LIVE) ── */}
         <section>
@@ -776,7 +777,7 @@ export default function MusicDashboard() {
         <section>
           <SL>Top 5 Artists · Year Over Year · 2014–2026</SL>
           <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px",overflowX:"auto"}}>
-            <div style={{display:"grid",gridTemplateColumns:`repeat(${YOY_YEARS.length},1fr)`,gap:3,minWidth:700}}>
+            <div style={{display:"grid",gridTemplateColumns:`repeat(${YOY_YEARS.length},minmax(70px,1fr))`,gap:3,minWidth:"max-content"}}>
               {YOY_YEARS.map(yr=>{
                 if (yr==="···") return (
                   <div key="gap" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"10px 0",gap:4}}>

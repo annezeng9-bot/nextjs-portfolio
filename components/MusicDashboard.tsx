@@ -374,6 +374,8 @@ export default function MusicDashboard() {
           .md-week-a{grid-template-columns:1fr 1fr}
           .md-g4{grid-template-columns:1fr 1fr}
           .md-g3{grid-template-columns:1fr}
+          .md-mobile-hide{display:none!important}
+          .md-yday-card-extra{display:none}
         }
       `}</style>
 
@@ -423,7 +425,7 @@ export default function MusicDashboard() {
                         <div style={{fontSize:11,color:"#555",fontFamily:"'IBM Plex Mono',monospace",marginTop:2}}>{a}</div>
                       </div>
                     ))}
-                    <div style={{marginTop:14,paddingTop:12,borderTop:"1px solid #181818"}}>
+                    <div className="md-yday-card-extra" style={{marginTop:14,paddingTop:12,borderTop:"1px solid #181818"}}>
                       <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>most played</div>
                       {d.artists.map(([a,ct],i)=>(
                         <div key={i} style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
@@ -440,7 +442,7 @@ export default function MusicDashboard() {
         </section>
 
         {/* ── THIS WEEK (LIVE) ── */}
-        <section>
+        <section className="md-mobile-hide">
           <SL>This Week · {monThisWk.toLocaleDateString("en-US",{month:"short",day:"numeric"})}–{sunThisWk.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</SL>
           {!weekData && !loadErr.week && <Spinner/>}
           {loadErr.week && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#f87171",padding:"20px 0"}}>Error: {loadErr.week}</div>}
@@ -493,7 +495,7 @@ export default function MusicDashboard() {
         </section>
 
         {/* ── MONTHLY (STATIC) ── */}
-        <section>
+        <section className="md-mobile-hide">
           <SL>Monthly Listening Rhythm · 2023–2026</SL>
           <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"24px 16px 16px"}}>
             <div style={{display:"flex",gap:12,marginBottom:20,flexWrap:"wrap"}}>
@@ -558,7 +560,7 @@ export default function MusicDashboard() {
         </section>
 
         {/* ── GENRE ARCS + DIVERSITY ── */}
-        <section>
+        <section className="md-mobile-hide">
           <div className="md-g2a">
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"24px 16px 16px"}}>
               <SL>Genre Arcs</SL>
@@ -602,7 +604,7 @@ export default function MusicDashboard() {
         </section>
 
         {/* ── GENRE SHIFTS + RADAR ── */}
-        <section>
+        <section className="md-mobile-hide">
           <SL>Genre Shifts · 2014 → 2026</SL>
           <div className="md-g2">
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -654,7 +656,7 @@ export default function MusicDashboard() {
         </section>
 
         {/* ── TOP ALBUMS ── */}
-        <section>
+        <section className="md-mobile-hide">
           <SL>Top Albums · Rolling by Year</SL>
           <div className="md-g3">
             {Object.entries(TOP_ALBUMS).map(([yr,albums])=>{
@@ -732,7 +734,7 @@ export default function MusicDashboard() {
         </section>
 
         {/* ── NEW DISCOVERIES ── */}
-        <section>
+        <section className="md-mobile-hide">
           <SL>New Artist Discoveries · Per Year</SL>
           <div className="md-g32">
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 16px"}}>

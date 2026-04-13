@@ -347,7 +347,7 @@ export default function MusicDashboard() {
   const yearsOrdered = [yr5, yr4, yr3, yr2, yr1, yrNow];
 
   return (
-    <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60,overflowX:"hidden",width:"100%"}}>
+    <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60,width:"100%"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
         *{box-sizing:border-box}
@@ -372,7 +372,7 @@ export default function MusicDashboard() {
         </div>
       </div>
 
-      <div style={{padding:"clamp(14px,3vw,36px) clamp(14px,3vw,36px) 0",display:"grid",gap:"clamp(24px,4vw,48px)"}}>
+      <div style={{padding:"clamp(14px,3vw,36px) clamp(14px,3vw,36px) 0",display:"grid",gridTemplateColumns:"minmax(0,1fr)",gap:"clamp(24px,4vw,48px)"}}>
 
         {/* ── YESTERDAY (LIVE) ── */}
         <section>

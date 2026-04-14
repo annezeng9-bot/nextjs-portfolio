@@ -223,6 +223,21 @@ const Spinner = ({label=""}) => (
   </div>
 );
 
+const EmptyWave = ({color="#555",label="no plays"}) => {
+  const bars = [2,3,1.5,4,2,1,3,2.5,1,2,3.5,1.5,2,4,1,2.5,3,1.5];
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+      <svg width="72" height="32" viewBox="0 0 72 32" fill="none" style={{opacity:0.5}}>
+        {bars.map((h,i)=>(
+          <rect key={i} x={i*4} y={16-h/2} width="2.5" height={h} rx="1" fill={color}/>
+        ))}
+        <line x1="0" y1="16" x2="72" y2="16" stroke={color} strokeWidth="0.5" strokeOpacity="0.3"/>
+      </svg>
+      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:color,letterSpacing:"0.14em",textTransform:"uppercase",opacity:0.6}}>{label}</div>
+    </div>
+  );
+};
+
 const PlainTip = ({active,payload,label}) => {
   if (!active||!payload?.length) return null;
   return (
@@ -386,9 +401,9 @@ export default function MusicDashboard() {
               {yearsOrdered.map(yr=>{
                 const d=dayData[yr]; const c=YC[String(yr)]||"#888";
                 if (!d||d.count===0) return (
-                  <div key={yr} style={{background:"#0a0a0a",border:"1px solid #161616",borderRadius:6,padding:20,borderTop:"2px solid #1e1e1e",opacity:0.4,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:180,gap:10}}>
+                  <div key={yr} style={{background:"#0a0a0a",border:"1px solid #161616",borderRadius:6,padding:20,borderTop:`2px solid ${c}20`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:180,gap:14}}>
                     <YP year={yr}/>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#333",marginTop:8,textAlign:"center",lineHeight:1.8}}>no plays<br/>this date</div>
+                    <EmptyWave color={c} label="silence"/>
                   </div>
                 );
                 return (
@@ -430,8 +445,17 @@ export default function MusicDashboard() {
               <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 12px"}}>
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>scrobbles this week</div>
                 {yearsOrdered.map(yr=>{
-                  const w=weekData[yr]; if (!w) return null;
+                  const w=weekData[yr];
                   const maxW=Math.max(...yearsOrdered.map(y=>weekData[y]?.count||0));
+                  if (!w||w.count===0) return (
+                    <div key={yr} style={{marginBottom:16,opacity:0.5}}>
+                      <div style={{display:"flex",justifyContent:"space-between",marginBottom:6,alignItems:"center"}}>
+                        <YP year={yr}/>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:"#222"}}>—</span>
+                      </div>
+                      <div style={{height:6,background:"#1a1a1a",borderRadius:3}}/>
+                    </div>
+                  );
                   return (
                     <div key={yr} style={{marginBottom:16}}>
                       <div style={{display:"flex",justifyContent:"space-between",marginBottom:6,alignItems:"center"}}>
@@ -449,7 +473,16 @@ export default function MusicDashboard() {
                 <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:20}}>top artists this week</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(100px,1fr))",gap:10}}>
                   {yearsOrdered.map(yr=>{
-                    const w=weekData[yr]; if (!w) return null;
+                    const w=weekData[yr];
+                    const c=YC[String(yr)]||"#888";
+                    if (!w||!w.artists||w.artists.length===0) return (
+                      <div key={yr}>
+                        <div style={{marginBottom:12}}><YP year={yr}/></div>
+                        <div style={{display:"flex",alignItems:"center",justifyContent:"center",paddingTop:12}}>
+                          <EmptyWave color={c} label="no data"/>
+                        </div>
+                      </div>
+                    );
                     return (
                       <div key={yr}>
                         <div style={{marginBottom:12}}><YP year={yr}/></div>

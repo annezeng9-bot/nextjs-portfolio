@@ -143,19 +143,14 @@ const GENRE_ARTISTS = {
 };
 const RADAR_DATA = GENRES.filter(g=>g!=="Pop").map(g=>({genre:g,"2014":GENRE_STACKED[0][g]||0,"2021":GENRE_STACKED[4][g]||0,"2022":GENRE_STACKED[5][g]||0,"2023":GENRE_STACKED[6][g]||0,"2024":GENRE_STACKED[7][g]||0,"2025":GENRE_STACKED[8][g]||0,"2026":GENRE_STACKED[9][g]||0}));
 
-const ERA_COLOR = {2014:"#60a5fa",2015:"#60a5fa",2016:"#93c5fd",2021:"#ff6b9d",2022:"#ff6b9d",2023:"#f472b6",2024:"#a78bfa",2025:"#a78bfa",2026:"#f5a623"};
-const ERA_LABEL = {2014:"western pop",2015:"western pop",2016:"transition",2021:"k-pop era",2022:"k-pop era",2023:"k-pop era",2024:"k-pop / r&b",2025:"k-pop / r&b",2026:"present"};
-const TOP_ALBUMS = {
-  2014:[["1989 (Deluxe)","Taylor Swift",1756],["5SOS (Deluxe)","5 Seconds of Summer",1733],["Journals","Justin Bieber",1481]],
-  2015:[["Reflection","Fifth Harmony",1027],["Handwritten","Shawn Mendes",432],["Purpose","Justin Bieber",320]],
-  2016:[["Mind of Mine","Zayn",256],["When It's Dark Out","G-Eazy",172],["These Things Happen","G-Eazy",158]],
-  2021:[["Eyes Wide Open","TWICE",432],["Summer Nights","TWICE",318],["THE ALBUM","BLACKPINK",248]],
-  2022:[["BORN PINK","BLACKPINK",436],["CRAZY IN LOVE","ITZY",305],["CHECKMATE","ITZY",204]],
-  2023:[["BORN PINK","BLACKPINK",223],["UNFORGIVEN","LE SSERAFIM",156],["KILL MY DOUBT","ITZY",141]],
-  2024:[["rosie","Rosé",643],["BORN TO BE","ITZY",139],["SOS","SZA",137]],
-  2025:[["rosie","Rosé",562],["Ruby","Jennie",204],["SOS Deluxe: LANA","SZA",177]],
-  2026:[["SWAG II","Justin Bieber",52],["Born in the Wild","Tems",50],["Love Is A Kingdom","Tems",44]],
-};
+const LISTENING_ERAS = [
+  {years:"2014–16",label:"Western Pop",color:"#60a5fa",artists:["One Direction","Taylor Swift","Justin Bieber"],pct:85,note:"Pop monoculture. Top 3 artists held 50%+ of all plays."},
+  {years:"2017–20",label:"Dark Ages",color:"#333",artists:[],pct:0,note:"No scrobble data. The lost years."},
+  {years:"2021–23",label:"K-Pop Takeover",color:"#ff6b9d",artists:["TWICE","BLACKPINK","ITZY"],pct:68,note:"K-Pop peaks at 38%. Genre diversity doubles."},
+  {years:"2024",label:"K-Pop / R&B Bridge",color:"#a78bfa",artists:["Rosé","LE SSERAFIM","SZA"],pct:51,note:"Solo artists rise. R&B enters top 3 genres."},
+  {years:"2025",label:"Genre Blur",color:"#a78bfa",artists:["Rosé","Justin Bieber","Emotional Oranges"],pct:44,note:"No single genre above 22%. Most diverse year yet."},
+  {years:"2026",label:"Global Pop",color:"#f5a623",artists:["Justin Bieber","Tems","Drake"],pct:35,note:"Afrobeats and R&B overtake K-Pop. Full circle."},
+];
 const YOY_YEARS = [2014,2015,2016,"···",2021,2022,2023,2024,2025,2026];
 const TOP_ARTISTS_YOY = {
   2014:[["One Direction",2657],["Justin Bieber",2527],["Fifth Harmony",2123],["Taylor Swift",2042],["Ed Sheeran",2025]],
@@ -663,70 +658,66 @@ export default function MusicDashboard() {
                 );
               })}
             </div>
-            <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 12px 16px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em"}}>Genre Fingerprint</div>
-                <div style={{display:"flex",gap:8}}>
-                  {["all","2014","2021","2022","2023","2024","2025","2026"].map(y=>(
-                    <button key={y} className="btn" onClick={()=>setRadarYr(y)}
-                      style={{background:"none",border:`1px solid ${radarYr===y?(y==="all"?"#f0ece0":YC[y]||"#444"):"#222"}`,borderRadius:3,padding:"3px 8px",cursor:"pointer",fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:radarYr===y?(y==="all"?"#f0ece0":YC[y]||"#f0ece0"):"#555",transition:"all 0.2s"}}>{y==="all"?"overlay":y}</button>
-                  ))}
-                </div>
-              </div>
-              <div style={{display:"flex",gap:10,marginBottom:4,flexWrap:"wrap",minHeight:18}}>
-                {radarYr==="all"
-                  ? ["2014","2021","2022","2023","2024","2025","2026"].map(y=>(<div key={y} style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:2,background:YC[y],display:"inline-block"}}/><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:YC[y]}}>{y}</span></div>))
-                  : radarYr&&YC[radarYr]&&(<div style={{display:"flex",alignItems:"center",gap:6}}><span style={{width:16,height:2,background:YC[radarYr],display:"inline-block"}}/><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:YC[radarYr]}}>{radarYr}</span></div>)
-                }
-              </div>
-              <ResponsiveContainer width="100%" height={310}>
-                <RadarChart data={RADAR_DATA} margin={{top:10,right:28,bottom:10,left:28}}>
-                  <PolarGrid stroke="#1e1e1e"/>
-                  <PolarAngleAxis dataKey="genre" tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fill:"#666"}}/>
-                  <PolarRadiusAxis angle={30} domain={[0,25]} tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fill:"#333"}} tickCount={3} tickFormatter={v=>`${v}%`} axisLine={false}/>
-                  {["2014","2021","2022","2023","2024","2025","2026"].filter(y=>radarYr==="all"||radarYr===y).map(y=>(
-                    <Radar key={y} name={y} dataKey={y} stroke={YC[y]||"#888"} fill={YC[y]||"#888"} fillOpacity={radarYr==="all"?0.08:0.15} strokeWidth={radarYr==="all"?1.5:2}/>
-                  ))}
-                  <Tooltip content={<GenreTip/>}/>
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </section>
-
-        {/* ── TOP ALBUMS ── */}
-        <section>
-          <SL>Top Albums · Rolling by Year</SL>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:12}}>
-            {Object.entries(TOP_ALBUMS).map(([yr,albums])=>{
-              const y=Number(yr); const col=ERA_COLOR[y]; const lbl=ERA_LABEL[y];
-              return (
-                <div key={yr} className="hov" style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"14px 14px 12px",transition:"all 0.2s",borderTop:`2px solid ${col}22`}}>
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:600,color:col}}>{yr}</span>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:"#444",textTransform:"uppercase",letterSpacing:"0.08em"}}>{lbl}</span>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 12px 16px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                  <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em"}}>Genre Fingerprint</div>
+                  <div style={{display:"flex",gap:8}}>
+                    {["all","2014","2021","2022","2023","2024","2025","2026"].map(y=>(
+                      <button key={y} className="btn" onClick={()=>setRadarYr(y)}
+                        style={{background:"none",border:`1px solid ${radarYr===y?(y==="all"?"#f0ece0":YC[y]||"#444"):"#222"}`,borderRadius:3,padding:"3px 8px",cursor:"pointer",fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:radarYr===y?(y==="all"?"#f0ece0":YC[y]||"#f0ece0"):"#555",transition:"all 0.2s"}}>{y==="all"?"overlay":y}</button>
+                    ))}
                   </div>
-                  <div style={{height:1,background:"#1c1c1c",marginBottom:12}}/>
-                  {albums.map(([album,artist,count],i)=>(
-                    <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:i<2?10:0,paddingBottom:i<2?10:0,borderBottom:i<2?"1px solid #181818":"none"}}>
-                      <div style={{width:20,height:20,borderRadius:3,background:`${col}18`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
-                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:col,fontWeight:600}}>{i+1}</span>
-                      </div>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:13,fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{album}</div>
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:3}}>
-                          <div style={{fontSize:11,color:"#666",fontFamily:"'IBM Plex Mono',monospace",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"75%"}}>{artist}</div>
-                          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:col,flexShrink:0}}>{count.toLocaleString()}</div>
-                        </div>
-                        <div style={{height:2,background:"#1a1a1a",borderRadius:1,marginTop:5}}>
-                          <div style={{height:"100%",width:`${count/albums[0][2]*100}%`,background:`${col}50`,borderRadius:1}}/>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
-              );
-            })}
+                <div style={{display:"flex",gap:10,marginBottom:4,flexWrap:"wrap",minHeight:18}}>
+                  {radarYr==="all"
+                    ? ["2014","2021","2022","2023","2024","2025","2026"].map(y=>(<div key={y} style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:2,background:YC[y],display:"inline-block"}}/><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:YC[y]}}>{y}</span></div>))
+                    : radarYr&&YC[radarYr]&&(<div style={{display:"flex",alignItems:"center",gap:6}}><span style={{width:16,height:2,background:YC[radarYr],display:"inline-block"}}/><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:YC[radarYr]}}>{radarYr}</span></div>)
+                  }
+                </div>
+                <ResponsiveContainer width="100%" height={310}>
+                  <RadarChart data={RADAR_DATA} margin={{top:10,right:28,bottom:10,left:28}}>
+                    <PolarGrid stroke="#1e1e1e"/>
+                    <PolarAngleAxis dataKey="genre" tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fill:"#666"}}/>
+                    <PolarRadiusAxis angle={30} domain={[0,25]} tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fill:"#333"}} tickCount={3} tickFormatter={v=>`${v}%`} axisLine={false}/>
+                    {["2014","2021","2022","2023","2024","2025","2026"].filter(y=>radarYr==="all"||radarYr===y).map(y=>(
+                      <Radar key={y} name={y} dataKey={y} stroke={YC[y]||"#888"} fill={YC[y]||"#888"} fillOpacity={radarYr==="all"?0.08:0.15} strokeWidth={radarYr==="all"?1.5:2}/>
+                    ))}
+                    <Tooltip content={<GenreTip/>}/>
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+              <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 16px 16px",flex:1,display:"flex",flexDirection:"column"}}>
+                <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:16}}>Listening Eras</div>
+                <div style={{display:"flex",flexDirection:"column",gap:0,flex:1}}>
+                  {LISTENING_ERAS.map((era,idx)=>{
+                    const isDark=era.pct===0;
+                    return (
+                      <div key={idx} style={{display:"flex",gap:12,flex:1,minHeight:0}}>
+                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",width:12,flexShrink:0}}>
+                          <div style={{width:8,height:8,borderRadius:"50%",background:era.color,border:isDark?"1px solid #444":"none",flexShrink:0}}/>
+                          {idx<LISTENING_ERAS.length-1&&<div style={{width:1,flex:1,background:isDark?"#1e1e1e repeating-linear-gradient(to bottom,#1e1e1e 0,#1e1e1e 3px,transparent 3px,transparent 6px)":"#1e1e1e",backgroundImage:isDark?"repeating-linear-gradient(to bottom,#333 0,#333 3px,transparent 3px,transparent 6px)":undefined}}/>}
+                        </div>
+                        <div style={{flex:1,paddingBottom:idx<LISTENING_ERAS.length-1?12:0,minWidth:0}}>
+                          <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
+                            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,fontWeight:600,color:era.color}}>{era.years}</span>
+                            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:isDark?"#333":"#555",textTransform:"uppercase",letterSpacing:"0.08em"}}>{era.label}</span>
+                          </div>
+                          <div style={{fontSize:11,color:isDark?"#2a2a2a":"#666",lineHeight:1.6,marginBottom:era.artists.length?6:0}}>{era.note}</div>
+                          {era.artists.length>0&&(
+                            <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+                              {era.artists.map((a,i)=>(
+                                <span key={i} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:i===0?era.color:"#555",background:i===0?era.color+"14":"#161616",border:`1px solid ${i===0?era.color+"30":"#1e1e1e"}`,borderRadius:3,padding:"2px 7px"}}>{a}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

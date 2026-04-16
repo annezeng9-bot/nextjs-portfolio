@@ -214,6 +214,10 @@ const SL = ({children}) => (
 );
 const GDot = ({g}) => <span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",background:GC[g],flexShrink:0}}/>;
 
+const RING_R = [38, 30, 22];
+const RING_C = RING_R.map(r => 2 * Math.PI * r);
+const RING_OP = [0.9, 0.55, 0.3];
+
 const Spinner = ({label=""}) => (
   <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,padding:"40px 0",color:"#333"}}>
     <svg width="16" height="16" viewBox="0 0 16 16" style={{animation:"spin 1s linear infinite"}}>
@@ -623,24 +627,38 @@ export default function MusicDashboard() {
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
               {Object.entries(GENRE_ARTISTS).map(([genre,artists])=>{
                 const c=GC[genre]||"#888";
-                const maxPct=artists[0][1];
                 return (
-                  <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"12px 12px 10px"}}>
-                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
+                  <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"12px 12px 10px",textAlign:"center"}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:6}}>
                       <GDot g={genre}/>
-                      <span style={{fontSize:11,fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{genre}</span>
+                      <span style={{fontSize:11,fontWeight:600,color:"#e8e4d8"}}>{genre}</span>
                     </div>
-                    {artists.map(([name,pct],i)=>(
-                      <div key={i} style={{marginBottom:i<2?8:0}}>
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:3}}>
-                          <span style={{fontSize:11,color:i===0?"#e8e4d8":"#888",fontWeight:i===0?600:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"70%"}}>{name}</span>
-                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:c,flexShrink:0}}>{pct}%</span>
+                    <svg width="90" height="90" viewBox="0 0 90 90" style={{margin:"2px auto 8px",display:"block"}}>
+                      {artists.map(([,pct],i)=>{
+                        const r=RING_R[i], circ=RING_C[i], filled=circ*pct/100;
+                        return (
+                          <g key={i}>
+                            <circle cx="45" cy="45" r={r} fill="none" stroke="#1a1a1a" strokeWidth={4}/>
+                            <circle cx="45" cy="45" r={r} fill="none" stroke={c} strokeWidth={4}
+                              strokeDasharray={`${filled} ${circ-filled}`}
+                              strokeDashoffset={circ*0.25}
+                              strokeLinecap="round"
+                              opacity={RING_OP[i]}/>
+                          </g>
+                        );
+                      })}
+                    </svg>
+                    <div style={{display:"flex",flexDirection:"column",gap:3,textAlign:"left"}}>
+                      {artists.map(([name,pct],i)=>(
+                        <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <div style={{display:"flex",alignItems:"center",gap:5,overflow:"hidden"}}>
+                            <span style={{width:12,height:3,background:c,borderRadius:2,display:"inline-block",opacity:RING_OP[i],flexShrink:0}}/>
+                            <span style={{fontSize:11,color:i===0?"#e8e4d8":"#888",fontWeight:i===0?600:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}</span>
+                          </div>
+                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:c,flexShrink:0,opacity:RING_OP[i]}}>{pct}%</span>
                         </div>
-                        <div style={{height:3,background:"#1a1a1a",borderRadius:2}}>
-                          <div style={{height:"100%",width:`${pct/maxPct*100}%`,background:c,borderRadius:2,opacity:i===0?0.8:0.4}}/>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 );
               })}

@@ -131,15 +131,16 @@ const DIVERSITY_DATA = [
   {year:"2021",score:70.8},{year:"2022",score:74.5},{year:"2023",score:74.5},
   {year:"2024",score:77.4},{year:"2025",score:79.6},{year:"2026",score:79.6},
 ];
-const GENRE_SHIFTS = [
-  {genre:"K-Pop",        delta:-54.1,from:59.4,to:5.3, dir:"down"},
-  {genre:"R&B",          delta:+15.5,from:0.6, to:16.1,dir:"up"},
-  {genre:"Afrobeats",    delta:+7.1, from:0.0, to:7.1, dir:"up"},
-  {genre:"Pop",          delta:-30.4,from:51.5,to:21.1,dir:"down"},
-  {genre:"Hip-Hop",      delta:+5.9, from:2.9, to:8.8, dir:"up"},
-  {genre:"Indie Pop",    delta:+4.3, from:0.1, to:4.4, dir:"up"},
-  {genre:"K-R&B/Hip-Hop",delta:+1.9,from:0.0, to:1.9, dir:"up"},
-];
+const GENRE_ARTISTS = {
+  "K-Pop":[["TWICE",34],["BLACKPINK",19],["ITZY",17]],
+  "Pop":[["One Direction",24],["Justin Bieber",21],["Taylor Swift",16]],
+  "R&B":[["SZA",28],["Emotional Oranges",22],["The Weeknd",12]],
+  "Indie Pop":[["Jeremy Zucker",26],["Lauv",21],["HONNE",18]],
+  "K-R&B/Hip-Hop":[["Coogie",20],["YunB",16],["Bang Yedam",14]],
+  "Hip-Hop":[["Drake",24],["G-Eazy",22],["Metro Boomin",15]],
+  "Afrobeats":[["Tems",38],["Ayra Starr",27],["Burna Boy",12]],
+  "J-Rock":[["ONE OK ROCK",52],["RADWIMPS",18],["Kenshi Yonezu",14]],
+};
 const RADAR_DATA = GENRES.filter(g=>g!=="Pop").map(g=>({genre:g,"2014":GENRE_STACKED[0][g]||0,"2021":GENRE_STACKED[4][g]||0,"2022":GENRE_STACKED[5][g]||0,"2023":GENRE_STACKED[6][g]||0,"2024":GENRE_STACKED[7][g]||0,"2025":GENRE_STACKED[8][g]||0,"2026":GENRE_STACKED[9][g]||0}));
 
 const ERA_COLOR = {2014:"#60a5fa",2015:"#60a5fa",2016:"#93c5fd",2021:"#ff6b9d",2022:"#ff6b9d",2023:"#f472b6",2024:"#a78bfa",2025:"#a78bfa",2026:"#f5a623"};
@@ -615,26 +616,34 @@ export default function MusicDashboard() {
           </div>
         </section>
 
-        {/* ── GENRE SHIFTS + RADAR ── */}
+        {/* ── TOP ARTISTS BY GENRE + RADAR ── */}
         <section>
-          <SL>Genre Shifts · 2014 → 2026</SL>
+          <SL>Top Artists by Genre · All Time</SL>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {GENRE_SHIFTS.map(({genre,delta,from,to,dir})=>(
-                <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"10px 14px"}}>
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}><GDot g={genre}/><span style={{fontSize:12,fontWeight:600,color:"#e8e4d8"}}>{genre}</span></div>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:700,color:dir==="up"?"#4ade80":"#f87171"}}>{dir==="up"?"+":""}{delta.toFixed(1)}pp</span>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+              {Object.entries(GENRE_ARTISTS).map(([genre,artists])=>{
+                const c=GC[genre]||"#888";
+                const maxPct=artists[0][1];
+                return (
+                  <div key={genre} style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"12px 12px 10px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
+                      <GDot g={genre}/>
+                      <span style={{fontSize:11,fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{genre}</span>
+                    </div>
+                    {artists.map(([name,pct],i)=>(
+                      <div key={i} style={{marginBottom:i<2?8:0}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:3}}>
+                          <span style={{fontSize:11,color:i===0?"#e8e4d8":"#888",fontWeight:i===0?600:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"70%"}}>{name}</span>
+                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:c,flexShrink:0}}>{pct}%</span>
+                        </div>
+                        <div style={{height:3,background:"#1a1a1a",borderRadius:2}}>
+                          <div style={{height:"100%",width:`${pct/maxPct*100}%`,background:c,borderRadius:2,opacity:i===0?0.8:0.4}}/>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div style={{display:"flex",gap:6,alignItems:"center"}}>
-                    <div style={{flex:from,height:6,background:GC[genre],borderRadius:2,opacity:0.4,minWidth:2}}/>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:"#444",flexShrink:0}}>{from}%</span>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:"#333",flexShrink:0}}>→</span>
-                    <div style={{flex:to,height:6,background:GC[genre],borderRadius:2,minWidth:to>0?2:0}}/>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:dir==="up"?"#4ade80":"#f87171",flexShrink:0}}>{to}%</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div style={{background:"#0f0f0f",border:"1px solid #1c1c1c",borderRadius:6,padding:"20px 12px 16px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
@@ -656,7 +665,7 @@ export default function MusicDashboard() {
                 <RadarChart data={RADAR_DATA} margin={{top:10,right:28,bottom:10,left:28}}>
                   <PolarGrid stroke="#1e1e1e"/>
                   <PolarAngleAxis dataKey="genre" tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fill:"#666"}}/>
-                  <PolarRadiusAxis angle={30} domain={[0,25]} tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fill:"#333"}} tickCount={3} tickFormatter={v=>`${v}%`}/>
+                  <PolarRadiusAxis angle={30} domain={[0,25]} tick={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fill:"#333"}} tickCount={3} tickFormatter={v=>`${v}%`} axisLine={false}/>
                   {["2014","2021","2022","2023","2024","2025","2026"].filter(y=>radarYr==="all"||radarYr===y).map(y=>(
                     <Radar key={y} name={y} dataKey={y} stroke={YC[y]||"#888"} fill={YC[y]||"#888"} fillOpacity={radarYr==="all"?0.08:0.15} strokeWidth={radarYr==="all"?1.5:2}/>
                   ))}

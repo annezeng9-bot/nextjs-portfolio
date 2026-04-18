@@ -7,7 +7,6 @@ import styles from './about.module.css';
 const teams = [
   { name: 'Toronto Tempo',          number: '26', primary: '#6B1F3A', secondary: '#A8C8E8', accent: '#FFFFFF' },
   { name: 'Toronto Blue Jays',      number: '27', primary: '#134A8E', secondary: '#FFFFFF', accent: '#FFFFFF' },
-  { name: 'UConn Huskies WBB',      number: '35', primary: '#000E2F', secondary: '#E03A3E', accent: '#FFFFFF' },
   { name: 'Golden State Valkyries', number: '22', primary: '#1a1a2e', secondary: '#C8A2C8', accent: '#FFFFFF' },
   { name: 'Indiana Fever',          number: '22', primary: '#002D62', secondary: '#E03A3E', accent: '#C9A84C' },
   { name: 'Los Angeles Lakers',     number: '23', primary: '#552583', secondary: '#FDB927', accent: '#FFFFFF' },

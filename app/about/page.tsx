@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './about.module.css';
@@ -10,7 +10,6 @@ const teams = [
   { name: 'UConn Huskies WBB',      number: '35', primary: '#000E2F', secondary: '#E03A3E', accent: '#FFFFFF' },
   { name: 'Golden State Valkyries', number: '22', primary: '#1a1a2e', secondary: '#C8A2C8', accent: '#FFFFFF' },
   { name: 'Indiana Fever',          number: '22', primary: '#002D62', secondary: '#E03A3E', accent: '#C9A84C' },
-  { name: 'Seattle Storm',          number: '5',  primary: '#2C5F2E', secondary: '#FFC72C', accent: '#FFFFFF' },
   { name: 'Los Angeles Lakers',     number: '23', primary: '#552583', secondary: '#FDB927', accent: '#FFFFFF' },
 ];
 
@@ -62,7 +61,8 @@ export default function AboutPage() {
           <p className={styles.tagline}>Toronto-based. Senior Analyst. Photographer.</p>
           <p className={styles.body}>
             I build systems that organize and visualize information. I also take lots of photos!
-            I create everything from data dashboards to live broadcast assets to high-speed sports photography.
+            My work ranges from architecting data dashboards to producing live broadcast assets
+            to high-speed sports photography.
           </p>
 
           <div className={styles.divider} />
@@ -77,7 +77,7 @@ export default function AboutPage() {
           </div>
 
           <a href="/collection" className={styles.collectionLink}>
-            Check out my card collection!
+            Check out my card collection
           </a>
         </div>
 

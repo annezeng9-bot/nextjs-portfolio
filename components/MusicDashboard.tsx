@@ -40,22 +40,69 @@ function mondayOf(date) {
   return d;
 }
 
-// Fetch one day's tracks → {count, tracks[[name,artist]], artists[[artist,count]]}
+// Map Last.fm tags → known genre labels
+const TAG_MAP = [
+  [/k-?pop|korean pop/i,                          "K-Pop"],
+  [/k-?r&b|korean r&b|k-?hip.hop|korean hip.hop/i,"K-R&B/Hip-Hop"],
+  [/indie pop/i,                                   "Indie Pop"],
+  [/\br&b\b|rnb|neo soul|contemporary r&b/i,       "R&B"],
+  [/hip.hop|hip hop|\brap\b/i,                     "Hip-Hop"],
+  [/afrobeats?|afropop/i,                          "Afrobeats"],
+  [/j-rock|j rock|japanese rock/i,                 "J-Rock"],
+  [/latin/i,                                       "Latin"],
+  [/\bpop\b/i,                                     "Pop"],
+];
+
+async function fetchArtistGenre(artist) {
+  try {
+    const d = await lfm("artist.getTopTags", { artist, autocorrect: 1 });
+    const tags = [].concat(d.toptags?.tag || []).map(t => t.name);
+    for (const tag of tags.slice(0, 15)) {
+      for (const [re, genre] of TAG_MAP) {
+        if (re.test(tag)) return genre;
+      }
+    }
+    return null;
+  } catch { return null; }
+}
+
+// Fetch one day's tracks → {count, genres:[{genre,pct,topArtist}]}
 async function fetchDay(date) {
   const from = dayStart(date), to = dayEnd(date);
   const d = await lfm("user.getRecentTracks", { from, to, limit: 200 });
-  const raw  = [].concat(d.recenttracks?.track || []).filter(t => t.date);
+  const raw   = [].concat(d.recenttracks?.track || []).filter(t => t.date);
   const total = parseInt(d.recenttracks?.["@attr"]?.total || raw.length);
-  const seen = new Set(), top3 = [];
-  for (const t of raw) {
-    const k = `${t.name}||${t.artist?.["#text"]}`;
-    if (!seen.has(k)) { seen.add(k); top3.push([t.name, t.artist?.["#text"]]); }
-    if (top3.length === 3) break;
-  }
+
+  if (raw.length === 0) return { count: total, genres: [] };
+
+  // Count plays per artist, take top 10 for tag lookup
   const ac = {};
-  raw.forEach(t => { const a = t.artist?.["#text"]; ac[a] = (ac[a]||0)+1; });
-  const artists = Object.entries(ac).sort((a,b)=>b[1]-a[1]).slice(0,3);
-  return { count: total, tracks: top3, artists };
+  raw.forEach(t => { const a = t.artist?.["#text"]; if (a) ac[a] = (ac[a]||0)+1; });
+  const topArtists = Object.entries(ac).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+  // Resolve genre for each top artist in parallel
+  const resolvedGenres = await Promise.all(topArtists.map(([a]) => fetchArtistGenre(a)));
+
+  // Aggregate play counts by genre; first artist encountered per genre = top artist
+  const gc = {};
+  topArtists.forEach(([artist, plays], i) => {
+    const genre = resolvedGenres[i];
+    if (!genre) return;
+    if (!gc[genre]) gc[genre] = { plays: 0, topArtist: artist };
+    gc[genre].plays += plays;
+  });
+
+  const base = total || 1;
+  const genres = Object.entries(gc)
+    .sort((a,b) => b[1].plays - a[1].plays)
+    .slice(0, 3)
+    .map(([genre, { plays, topArtist }]) => ({
+      genre,
+      pct: Math.max(1, Math.round(plays / base * 100)),
+      topArtist,
+    }));
+
+  return { count: total, genres };
 }
 
 // Fetch one week's data → {count, artists[[name,count]]}
@@ -412,22 +459,29 @@ export default function MusicDashboard() {
                       <YP year={yr}/>
                       <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:20,fontWeight:600,color:c}}>{d.count.toLocaleString()}</span>
                     </div>
-                    <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:12}}>top 3 tracks</div>
-                    {d.tracks.map(([t,a],i)=>(
-                      <div key={i} style={{paddingBottom:8,marginBottom:8,borderBottom:i<2?"1px solid #181818":"none"}}>
-                        <div style={{fontSize:13,fontWeight:600,color:"#e8e4d8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t}</div>
-                        <div style={{fontSize:11,color:"#555",fontFamily:"'IBM Plex Mono',monospace",marginTop:2}}>{a}</div>
-                      </div>
-                    ))}
-                    <div style={{marginTop:14,paddingTop:12,borderTop:"1px solid #181818"}}>
-                      <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>most played</div>
-                      {d.artists.map(([a,ct],i)=>(
-                        <div key={i} style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-                          <span style={{fontSize:12,color:"#aaa",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"75%"}}>{a}</span>
-                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:c,flexShrink:0,marginLeft:8}}>{ct}</span>
-                        </div>
-                      ))}
-                    </div>
+                    <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:14}}>top genres</div>
+                    {d.genres.length === 0 ? (
+                      <EmptyWave color={c} label="no genre data"/>
+                    ) : (
+                      d.genres.map(({genre, pct, topArtist}, i) => {
+                        const gc2 = GC[genre] || c;
+                        return (
+                          <div key={i} style={{marginBottom: i < d.genres.length - 1 ? 14 : 0}}>
+                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+                              <div style={{display:"flex",alignItems:"center",gap:5}}>
+                                <GDot g={genre}/>
+                                <span style={{fontSize:12,fontWeight:600,color:"#e8e4d8"}}>{genre}</span>
+                              </div>
+                              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:600,color:gc2}}>{pct}%</span>
+                            </div>
+                            <div style={{height:3,background:"#1a1a1a",borderRadius:2,marginBottom:5}}>
+                              <div style={{height:"100%",width:`${pct}%`,background:gc2,borderRadius:2,transition:"width 0.4s ease"}}/>
+                            </div>
+                            <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{topArtist}</div>
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                 );
               })}

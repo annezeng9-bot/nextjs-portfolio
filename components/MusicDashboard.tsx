@@ -463,24 +463,21 @@ export default function MusicDashboard() {
                     {d.genres.length === 0 ? (
                       <EmptyWave color={c} label="no genre data"/>
                     ) : (
-                      d.genres.map(({genre, pct, topArtist}, i) => {
-                        const gc2 = GC[genre] || c;
-                        return (
-                          <div key={i} style={{marginBottom: i < d.genres.length - 1 ? 14 : 0}}>
-                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
-                              <div style={{display:"flex",alignItems:"center",gap:5}}>
-                                <GDot g={genre}/>
-                                <span style={{fontSize:12,fontWeight:600,color:"#e8e4d8"}}>{genre}</span>
-                              </div>
-                              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:600,color:gc2}}>{pct}%</span>
+                      d.genres.map(({genre, pct, topArtist}, i) => (
+                        <div key={i} style={{marginBottom: i < d.genres.length - 1 ? 14 : 0}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+                            <div style={{display:"flex",alignItems:"center",gap:5}}>
+                              <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:"#444",flexShrink:0}}/>
+                              <span style={{fontSize:12,fontWeight:600,color:"#e8e4d8"}}>{genre}</span>
                             </div>
-                            <div style={{height:3,background:"#1a1a1a",borderRadius:2,marginBottom:5}}>
-                              <div style={{height:"100%",width:`${pct}%`,background:gc2,borderRadius:2,transition:"width 0.4s ease"}}/>
-                            </div>
-                            <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{topArtist}</div>
+                            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:600,color:"#aaa"}}>{pct}%</span>
                           </div>
-                        );
-                      })
+                          <div style={{height:3,background:"#1a1a1a",borderRadius:2,marginBottom:5}}>
+                            <div style={{height:"100%",width:`${pct}%`,background:"#444",borderRadius:2,transition:"width 0.4s ease"}}/>
+                          </div>
+                          <div style={{fontSize:10,fontFamily:"'IBM Plex Mono',monospace",color:"#555",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{topArtist}</div>
+                        </div>
+                      ))
                     )}
                   </div>
                 );

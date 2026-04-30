@@ -3,26 +3,36 @@ import { useState } from 'react';
 import styles from './jalen.module.css';
 
 const JALEN_DATA = [
-  { team: "Oklahoma City Thunder", abbr: "OKC", jalens: [{ name: "Jalen Williams", winShares: 6.2, allStar: false }, { name: "Jaylin Williams", winShares: 3.4, allStar: false }], record: "55-15", wins: 55, seed: "W1" },
-  { team: "Detroit Pistons",        abbr: "DET", jalens: [{ name: "Jalen Duren",   winShares: 9.1, allStar: true  }], record: "51-19", wins: 51, seed: "E1" },
-  { team: "Boston Celtics",         abbr: "BOS", jalens: [{ name: "Jaylen Brown",   winShares: 11.4, allStar: true  }], record: "47-23", wins: 47, seed: "E2" },
-  { team: "New York Knicks",        abbr: "NYK", jalens: [{ name: "Jalen Brunson", winShares: 10.8, allStar: true  }], record: "46-25", wins: 46, seed: "E3" },
-  { team: "San Antonio Spurs",      abbr: "SAS", jalens: [], record: "52-18", wins: 52, seed: "W2" },
-  { team: "Los Angeles Lakers",     abbr: "LAL", jalens: [], record: "45-25", wins: 45, seed: "W3" },
-  { team: "Houston Rockets",        abbr: "HOU", jalens: [{ name: "Jalen Green",   winShares: 5.1, allStar: false }], record: "42-27", wins: 42, seed: "W4" },
-  { team: "Denver Nuggets",         abbr: "DEN", jalens: [{ name: "Jalen Pickett", winShares: 0.7, allStar: false }], record: "43-28", wins: 43, seed: "W5" },
-  { team: "Minnesota Timberwolves", abbr: "MIN", jalens: [{ name: "Jaylen Clark",  winShares: 1.2, allStar: false }], record: "43-28", wins: 43, seed: "W6" },
-  { team: "Cleveland Cavaliers",    abbr: "CLE", jalens: [{ name: "Jaylon Tyson",  winShares: 4.6, allStar: false }], record: "43-27", wins: 43, seed: "E4" },
-  { team: "Toronto Raptors",        abbr: "TOR", jalens: [], record: "39-30", wins: 39, seed: "E5" },
-  { team: "Phoenix Suns",           abbr: "PHX", jalens: [{ name: "Jalen Green",   winShares: 5.1, allStar: false }], record: "39-31", wins: 39, seed: "W7" },
-  { team: "Atlanta Hawks",          abbr: "ATL", jalens: [{ name: "Jalen Johnson", winShares: 8.8, allStar: true  }], record: "38-32", wins: 38, seed: "E7" },
-  { team: "Orlando Magic",          abbr: "ORL", jalens: [{ name: "Jalen Suggs",   winShares: 4.3, allStar: false }], record: "38-31", wins: 38, seed: "E6" },
-  { team: "Golden State Warriors",  abbr: "GSW", jalens: [], record: "33-37", wins: 33, seed: "W10" },
-  { team: "Memphis Grizzlies",      abbr: "MEM", jalens: [{ name: "Jaylen Wells",  winShares: 3.1, allStar: false }], record: "24-45", wins: 24, seed: "W12" },
-  { team: "Chicago Bulls",          abbr: "CHI", jalens: [{ name: "Jalen Smith",   winShares: 2.9, allStar: false }], record: "28-42", wins: 28, seed: "E12" },
-  { team: "Washington Wizards",     abbr: "WAS", jalens: [], record: "16-53", wins: 16, seed: "E14" },
-  { team: "Brooklyn Nets",          abbr: "BKN", jalens: [{ name: "Jalen Wilson",  winShares: 0.4, allStar: false }], record: "17-53", wins: 17, seed: "E13" },
-  { team: "Indiana Pacers",         abbr: "IND", jalens: [], record: "15-55", wins: 15, seed: "E15" },
+  { team: "Oklahoma City Thunder",  abbr: "OKC", jalens: [{ name: "Jalen Williams", winShares: 6.2, allStar: false }, { name: "Jaylin Williams", winShares: 3.4, allStar: false }], record: "64-18", wins: 64, seed: "W1" },
+  { team: "San Antonio Spurs",      abbr: "SAS", jalens: [], record: "62-20", wins: 62, seed: "W2" },
+  { team: "Detroit Pistons",        abbr: "DET", jalens: [{ name: "Jalen Duren",   winShares: 9.1, allStar: true  }], record: "60-22", wins: 60, seed: "E1" },
+  { team: "Boston Celtics",         abbr: "BOS", jalens: [{ name: "Jaylen Brown",   winShares: 11.4, allStar: true  }], record: "56-26", wins: 56, seed: "E2" },
+  { team: "Denver Nuggets",         abbr: "DEN", jalens: [{ name: "Jalen Pickett", winShares: 0.7, allStar: false }], record: "54-28", wins: 54, seed: "W3" },
+  { team: "Los Angeles Lakers",     abbr: "LAL", jalens: [], record: "53-29", wins: 53, seed: "W4" },
+  { team: "New York Knicks",        abbr: "NYK", jalens: [{ name: "Jalen Brunson", winShares: 10.8, allStar: true  }], record: "53-29", wins: 53, seed: "E3" },
+  { team: "Cleveland Cavaliers",    abbr: "CLE", jalens: [{ name: "Jaylon Tyson",  winShares: 4.6, allStar: false }], record: "52-30", wins: 52, seed: "E4" },
+  { team: "Houston Rockets",        abbr: "HOU", jalens: [{ name: "Jalen Green",   winShares: 5.1, allStar: false }], record: "52-30", wins: 52, seed: "W5" },
+  { team: "Minnesota Timberwolves", abbr: "MIN", jalens: [{ name: "Jaylen Clark",  winShares: 1.2, allStar: false }], record: "49-33", wins: 49, seed: "W6" },
+  { team: "Toronto Raptors",        abbr: "TOR", jalens: [], record: "46-36", wins: 46, seed: "E5" },
+  { team: "Atlanta Hawks",          abbr: "ATL", jalens: [{ name: "Jalen Johnson", winShares: 8.8, allStar: true  }], record: "46-36", wins: 46, seed: "E6" },
+  { team: "Philadelphia 76ers",     abbr: "PHI", jalens: [{ name: "Jalen Carter",  winShares: 4.2, allStar: false }], record: "45-37", wins: 45, seed: "E7" },
+  { team: "Phoenix Suns",           abbr: "PHX", jalens: [], record: "45-37", wins: 45, seed: "W7" },
+  { team: "Orlando Magic",          abbr: "ORL", jalens: [{ name: "Jalen Suggs",   winShares: 4.3, allStar: false }], record: "45-37", wins: 45, seed: "E8" },
+  { team: "Charlotte Hornets",      abbr: "CHO", jalens: [], record: "44-38", wins: 44, seed: "E9" },
+  { team: "Miami Heat",             abbr: "MIA", jalens: [], record: "43-39", wins: 43, seed: "E10" },
+  { team: "Portland Trail Blazers", abbr: "POR", jalens: [], record: "42-40", wins: 42, seed: "W8" },
+  { team: "Los Angeles Clippers",   abbr: "LAC", jalens: [], record: "42-40", wins: 42, seed: "W9" },
+  { team: "Golden State Warriors",  abbr: "GSW", jalens: [], record: "37-45", wins: 37, seed: "W10" },
+  { team: "Milwaukee Bucks",        abbr: "MIL", jalens: [], record: "32-50", wins: 32, seed: "E11" },
+  { team: "Chicago Bulls",          abbr: "CHI", jalens: [{ name: "Jalen Smith",   winShares: 2.9, allStar: false }], record: "31-51", wins: 31, seed: "E12" },
+  { team: "New Orleans Pelicans",   abbr: "NOP", jalens: [], record: "26-56", wins: 26, seed: "W11" },
+  { team: "Dallas Mavericks",       abbr: "DAL", jalens: [], record: "26-56", wins: 26, seed: "W12" },
+  { team: "Memphis Grizzlies",      abbr: "MEM", jalens: [{ name: "Jaylen Wells",  winShares: 3.1, allStar: false }], record: "25-57", wins: 25, seed: "W13" },
+  { team: "Sacramento Kings",       abbr: "SAC", jalens: [], record: "22-60", wins: 22, seed: "W14" },
+  { team: "Utah Jazz",              abbr: "UTA", jalens: [], record: "22-60", wins: 22, seed: "W15" },
+  { team: "Brooklyn Nets",          abbr: "BKN", jalens: [{ name: "Jalen Wilson",  winShares: 0.4, allStar: false }], record: "20-62", wins: 20, seed: "E13" },
+  { team: "Indiana Pacers",         abbr: "IND", jalens: [], record: "19-63", wins: 19, seed: "E14" },
+  { team: "Washington Wizards",     abbr: "WAS", jalens: [], record: "17-65", wins: 17, seed: "E15" },
 ];
 
 function totalWS(t: typeof JALEN_DATA[0]) { return t.jalens.reduce((s, j) => s + j.winShares, 0); }
@@ -33,7 +43,7 @@ const g1 = JALEN_DATA.filter(t => t.jalens.length === 1);
 const g2 = JALEN_DATA.filter(t => t.jalens.length === 2);
 const AVG = { 0: avg(g0), 1: avg(g1), 2: avg(g2) };
 
-function InkBar({ wins, max = 55 }: { wins: number; max?: number }) {
+function InkBar({ wins, max = 64 }: { wins: number; max?: number }) {
   const pct = Math.min((wins / max) * 100, 100);
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 6, margin: "3px 0" }}>
@@ -94,7 +104,7 @@ export default function JalenPage() {
   });
 
   const maxWS   = Math.max(...JALEN_DATA.map(totalWS));
-  const maxWins = 55;
+  const maxWins = 64;
 
   return (
     <div className={styles.page}>
@@ -112,7 +122,7 @@ export default function JalenPage() {
           {/* Masthead */}
           <div style={{ paddingTop: 36, paddingBottom: 16, textAlign: "center" }}>
             <div style={{ fontSize: 10, letterSpacing: 5, fontFamily: "'IBM Plex Mono', monospace", color: "#888", marginBottom: 10, textTransform: "uppercase" }}>
-              The Jalen Gazette &nbsp;&middot;&nbsp; NBA Analytics Bureau &nbsp;&middot;&nbsp; Vol. IV, No. 26 &nbsp;&middot;&nbsp; Mar. 28, 2026
+              The Jalen Gazette &nbsp;&middot;&nbsp; NBA Analytics Bureau &nbsp;&middot;&nbsp; Vol. IV, No. 26 &nbsp;&middot;&nbsp; Apr. 13, 2026
             </div>
             <DoubleRule style={{ marginBottom: 14 }} />
             <h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "clamp(40px, 8vw, 96px)", lineHeight: 0.9, letterSpacing: -2, color: "#1a1a1a" }}>
@@ -132,7 +142,7 @@ export default function JalenPage() {
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: 200, paddingRight: 6 }}>
-              {[55, 42, 28, 15].map(v => (
+              {[64, 48, 32, 16].map(v => (
                 <span key={v} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: "#999" }}>{v}W</span>
               ))}
             </div>
@@ -207,8 +217,8 @@ export default function JalenPage() {
                   <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: "#888" }}>{row.avg} avg &middot; {row.count} team{row.count !== 1 ? "s" : ""}</span>
                 </div>
                 <div style={{ height: 22, background: "#e8e0d0", position: "relative", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${(row.avg / 55) * 100}%`, background: row.accent ? "#c0392b" : "#1a1a1a" }} />
-                  <span style={{ position: "absolute", left: `${(row.avg / 55) * 100 + 1}%`, top: "50%", transform: "translateY(-50%)", fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#555", fontWeight: 600 }}>{row.avg}W</span>
+                  <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${(row.avg / 64) * 100}%`, background: row.accent ? "#c0392b" : "#1a1a1a" }} />
+                  <span style={{ position: "absolute", left: `${(row.avg / 64) * 100 + 1}%`, top: "50%", transform: "translateY(-50%)", fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#555", fontWeight: 600 }}>{row.avg}W</span>
                 </div>
               </div>
             ))}
@@ -218,7 +228,7 @@ export default function JalenPage() {
           <DoubleRule style={{ margin: "32px 0 16px" }} />
           <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: "#999", letterSpacing: 1, flexWrap: "wrap", gap: 6 }}>
             <span>* DENOTES ALL-STAR &nbsp;&middot;&nbsp; ** = 2 JALENS &nbsp;&middot;&nbsp; * = 1 JALEN &nbsp;&middot;&nbsp; o = NONE</span>
-            <span>WIN SHARES ARE SEASON-TO-DATE ESTIMATES &nbsp;&middot;&nbsp; STANDINGS THROUGH MAR. 28, 2026</span>
+            <span>WIN SHARES ARE SEASON-TO-DATE ESTIMATES &nbsp;&middot;&nbsp; FINAL STANDINGS · 2025–26 REGULAR SEASON</span>
           </div>
           <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontStyle: "italic", fontSize: 13, color: "#aaa", marginTop: 28, lineHeight: 1.7 }}>
             Please note: If it&apos;s not blatantly clear, this is not an actual scientific analysis on the impact of Jalens on an NBA roster. But maybe naming your son Jalen improves his chances of making it to the NBA.

@@ -406,7 +406,7 @@ export default function MusicDashboard() {
 
   }, []);
 
-  const yearsOrdered = [yr5, yr4, yr3, yr2, yr1, yrNow];
+  const yearsOrdered = [yrNow, yr1, yr2, yr3, yr4, yr5];
 
   return (
     <div style={{minHeight:"100vh",background:"#080808",fontFamily:"'Syne',sans-serif",color:"#f0ece0",paddingBottom:60,width:"100%"}}>

@@ -56,13 +56,6 @@
   margin-bottom: 20px;
 }
 
-.body {
-  font-size: 14px;
-  color: var(--grey-500);
-  line-height: 1.85;
-  margin-bottom: 14px;
-}
-
 .quote {
   margin: 20px 0 0;
   padding-left: 14px;
@@ -89,91 +82,6 @@
   margin: 24px 0;
 }
 
-.ctas {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.ctaLink {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--black);
-  text-decoration: none;
-  transition: color 0.15s ease;
-  font-family: var(--font-body), sans-serif;
-}
-
-.ctaLink:hover { color: var(--grey-500); }
-
-.teamsSection {}
-
-.teamsLabel {
-  font-family: var(--font-monument-regular), sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--grey-400);
-  margin-bottom: 20px;
-}
-
-.jerseys {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: flex-end;
-}
-
-.jerseyWrap {
-  position: relative;
-  cursor: default;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Desktop hover */
-.jerseyWrap:hover .jerseyTooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Mobile tap â€” toggled via JS class */
-.jerseyWrap.touched .jerseyTooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.jerseyTooltip {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-  background: var(--black);
-  color: #fff;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  padding: 5px 8px;
-  border-radius: 3px;
-  opacity: 0;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  pointer-events: none;
-  font-family: var(--font-body), sans-serif;
-  z-index: 10;
-}
-
-.jerseyTooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 4px solid transparent;
-  border-top-color: var(--black);
-}
-
 .contact { display: flex; gap: 16px; align-items: center; margin-bottom: 8px; }
 
 .iconLink {
@@ -187,6 +95,7 @@
 
 .collectionLink {
   display: inline-block;
+  margin-top: 16px;
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--grey-300);

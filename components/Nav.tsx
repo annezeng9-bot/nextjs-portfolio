@@ -7,6 +7,7 @@ import styles from './Nav.module.css';
 const links = [
   { href: '/', label: 'Portfolio' },
   { href: '/about', label: 'About' },
+  { href: '/galleries', label: 'Galleries' },
   { href: '/video', label: 'Video' },
 ];
 

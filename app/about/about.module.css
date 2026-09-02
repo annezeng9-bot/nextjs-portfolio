@@ -63,11 +63,50 @@
   margin-bottom: 14px;
 }
 
+.quote {
+  margin: 20px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--grey-200);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--grey-500);
+  line-height: 1.7;
+}
+
+.quoteCite {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+}
+
 .divider {
   border: none;
   border-top: 0.5px solid var(--grey-200);
   margin: 24px 0;
 }
+
+.ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.ctaLink {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  font-family: var(--font-body), sans-serif;
+}
+
+.ctaLink:hover { color: var(--grey-500); }
 
 .teamsSection {}
 
@@ -150,7 +189,6 @@
 
 .collectionLink {
   display: inline-block;
-  margin-top: 20px;
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--grey-300);

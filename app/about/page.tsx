@@ -23,6 +23,11 @@ export default function AboutPage() {
           <h1 className={styles.name}>Hi, I&apos;m Anne.</h1>
           <p className={styles.tagline}>Toronto-based Sports Photographer</p>
 
+          <blockquote className={styles.quote}>
+            &ldquo;Y&apos;ALL KNOW WHAT TODAY IS. TODAY IS TACOOOO TUESDAAAAY&rdquo;
+            <cite className={styles.quoteCite}>— LeBron James</cite>
+          </blockquote>
+
           <div className={styles.divider} />
 
           <div className={styles.contact}>
@@ -30,9 +35,10 @@ export default function AboutPage() {
             <a href="https://www.facebook.com/annezmedia/" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>Facebook</a>
           </div>
 
-          <a href="/collection" className={styles.collectionLink}>
-            Check out my card collection!
-          </a>
+          <div className={styles.ctas}>
+            <a href="/galleries" className={styles.ctaLink}>View galleries →</a>
+            <a href="/collection" className={styles.collectionLink}>Check out my card collection!</a>
+          </div>
         </div>
 
       </div>

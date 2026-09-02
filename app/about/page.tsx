@@ -45,10 +45,7 @@ export default function AboutPage() {
             </a>
           </div>
 
-          <div className={styles.ctas}>
-            <a href="/galleries" className={styles.ctaLink}>View galleries →</a>
-            <a href="/collection" className={styles.collectionLink}>Check out my card collection!</a>
-          </div>
+          <a href="/collection" className={styles.collectionLink}>Check out my card collection!</a>
         </div>
 
       </div>

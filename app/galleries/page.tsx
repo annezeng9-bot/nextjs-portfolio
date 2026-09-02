@@ -4,7 +4,7 @@ const galleries = [
   {
     tag: 'Outrigger Canoe',
     title: 'CORA Eastern Sprint Championships',
-    description: '2025 Canadian Outrigger Racing Association Eastern Sprint Championships.',
+    description: '',
     url: 'https://annezengmedia.pixieset.com/coraeasternsprintchampionships/',
   },
 ];
@@ -14,7 +14,6 @@ export default function GalleriesPage() {
     <div className={styles.page}>
       <header className={styles.hero}>
         <p className={styles.label}>Galleries</p>
-        <h1 className={styles.title}>Event Photography</h1>
       </header>
 
       <div className={styles.grid}>

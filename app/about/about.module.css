@@ -174,18 +174,16 @@
   border-top-color: var(--black);
 }
 
-.contact { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 8px; }
+.contact { display: flex; gap: 16px; align-items: center; margin-bottom: 8px; }
 
-.contactLink {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.iconLink {
   color: var(--grey-400);
   transition: color 0.15s ease;
-  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
-.contactLink:hover { color: var(--black); }
+.iconLink:hover { color: var(--black); }
 
 .collectionLink {
   display: inline-block;

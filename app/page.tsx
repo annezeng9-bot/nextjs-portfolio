@@ -150,9 +150,11 @@ function MediaCard({ item, priority }: { item: Photo; priority?: boolean }) {
 
 function PhotoCard({ photo, priority }: { photo: Photo; priority?: boolean }) {
   const [hovered, setHovered] = useState(false);
+  const ratio = photo.h && photo.w ? `${photo.w} / ${photo.h}` : '3 / 2';
   return (
     <div
       className={styles.card}
+      style={{ aspectRatio: ratio }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -163,7 +165,7 @@ function PhotoCard({ photo, priority }: { photo: Photo; priority?: boolean }) {
         height={photo.h}
         priority={priority}
         sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1100px) 33vw, 25vw"
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+        className={styles.cardImg}
       />
       {(photo.location || photo.year) && (
         <div className={styles.overlay} style={{ opacity: hovered ? 1 : 0 }}>

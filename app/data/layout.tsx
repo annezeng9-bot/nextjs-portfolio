@@ -1,7 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const SESSION_KEY = 'data_unlocked';
+const COOKIE = 'data_unlocked';
+
+function getCookie() {
+  return document.cookie.split(';').some(c => c.trim().startsWith(COOKIE + '=1'));
+}
+
+function setCookie() {
+  document.cookie = `${COOKIE}=1; path=/; SameSite=Lax`;
+}
 
 function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
   const [value, setValue] = useState('');
@@ -10,7 +18,7 @@ function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (value === 'rosie') {
-      sessionStorage.setItem(SESSION_KEY, '1');
+      setCookie();
       onUnlock();
     } else {
       setError(true);
@@ -90,7 +98,7 @@ export default function DataLayout({ children }: { children: React.ReactNode }) 
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY) === '1') setUnlocked(true);
+    if (getCookie()) setUnlocked(true);
     setChecking(false);
   }, []);
 
